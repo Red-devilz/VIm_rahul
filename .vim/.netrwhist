@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/lib/systemd/system'
+let g:netrw_dirhist_2='/home/rahul/.local/share/nautilus/scripts'
+let g:netrw_dirhist_3='/home/rahul/Documents/python/sarang bands'
