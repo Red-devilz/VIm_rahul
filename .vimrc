@@ -1,12 +1,64 @@
-" Use Vim settings, rather than Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
+" Vundle settings
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'Syntastic'
+
+" " The following are examples of different formats supported.
+" " Keep Plugin commands between vundle#begin/end.
+" " plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
+" " plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" " Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" " git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" " The sparkup vim script is in a subdirectory of this repo called vim.
+" " Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" " Avoid a name conflict with L9
+" Plugin 'user/L9', {'name': 'newL9'}
+
+" all of your plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" to ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" brief help
+" :pluginlist       - lists configured plugins
+" :plugininstall    - installs plugins; append `!` to update or just :pluginupdate
+" :pluginsearch foo - searches for foo; append `!` to refresh local cache
+" :pluginclean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for faq
+
+
+"Syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 "syntax highlighting
 syntax enable
-"
+
 "indentation
-filetype indent plugin on
+" filetype indent plugin on
 
 " search as characters are entered
 set incsearch           
@@ -198,6 +250,9 @@ command! -nargs=+ -complete=dir Gcc Cmd gcc % -o <q-args>
  
 " define command Make( syntax ------  :Make <FILENAME> )
 command! -nargs=+ -complete=dir Make Cmd make -f <q-args>
+
+"tex live spell check
+command -nargs=0 Spell setlocal spell spelllang=en_gb
 
 
 
