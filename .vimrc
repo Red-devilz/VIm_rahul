@@ -259,8 +259,14 @@ command! -nargs=+ -complete=dir Make Cmd make -f <q-args>
 command -nargs=0 Spell setlocal spell spelllang=en_gb
 
 
+" Run python script
+command -nargs=0 RunP Cmd python % 
 
+" Run python3 script
+command -nargs=0 RunP3 Cmd python3 % 
 
+" Run C script as a.out
+command -nargs=0 RunC Cmd gcc % && ./a.out 
 
 
 
