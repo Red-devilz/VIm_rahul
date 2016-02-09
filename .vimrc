@@ -57,9 +57,12 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+:let g:syntastic_loc_list_height=5
 
 "syntax highlighting
 syntax enable
+"for Assembly syntax
+
 
 "indentation
 " filetype indent plugin on
@@ -150,6 +153,7 @@ endif " has("autocmd")
 " .m files are octave files
 augroup filetypedetect
   au! BufRead,BufNewFile *.m,*.oct set filetype=octave
+  au! BufRead,BufNewFile *.s set filetype=nasm
 augroup END
 
 " Put plugins and dictionaries in this dir (also on Windows)
@@ -175,6 +179,7 @@ augroup configgroup
 	autocmd FileType mail             let b:comment_leader = '> '
 	autocmd FileType vim              let b:comment_leader = '" '
 	autocmd FileType octave              let b:comment_leader = '% '
+	autocmd FileType nasm              let b:comment_leader = '; '
 	noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
 	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 augroup END
