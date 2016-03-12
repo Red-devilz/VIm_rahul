@@ -15,10 +15,8 @@ Plugin 'VundleVim/Vundle.vim'
 "AutoCompletion
 " Plugin 'Valloric/YouCompleteMe'
 
-
 " Python AutoCompletion
 Plugin 'davidhalter/jedi-vim'
-
 
 "Automatic syntax checking
 Plugin 'Syntastic'
@@ -29,6 +27,10 @@ Plugin 'thinca/vim-quickrun'
 " " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 
+" File manager
+Plugin 'scrooloose/nerdtree'
+"
+" Plugin 'klen/python-mode'
 " all of your plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -65,7 +67,15 @@ let g:jedi#popup_select_first = 0
 " So that vim splits are'nt affected
 let g:jedi#use_splits_not_buffers = "left"
 
+" Add this so that virtual environment docs also work
+
+
 " Use Shift + k to bring up documentation
+
+
+"==========Nerd Tree ===============
+" map <C-m> :NERDTreeToggle<CR>
+nmap <silent> <C-m> :NERDTreeToggle<CR>
 
 
 "=========Syntastic settings================
@@ -78,6 +88,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
+" let g:syntastic_auto_jump = 2
+
+" use :ll to jump to the next error
 
 
 "=========General Vim settings================
@@ -210,14 +223,27 @@ augroup configgroup
 	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 augroup END
 
+"============== Python Code folding=========
+set foldmethod=indent
+nnoremap <space> za
+vnoremap <space> zf
+
+" Ensure cold foldings are saved
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview 
+
+" ======= Vertical split resize ========
+" resize vertical splits with Ctrl-l / Ctrl-h
+nnoremap <C-l> 10<C-w>>
+nnoremap <C-h> 10<C-w><
+
+
 "================change backup dirctory to tmp===========
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
-
-
 
 
 "=========Mappings in VIM  ===================
