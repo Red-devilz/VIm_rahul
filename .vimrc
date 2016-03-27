@@ -29,7 +29,11 @@ Plugin 'tpope/vim-fugitive'
 
 " File manager
 Plugin 'scrooloose/nerdtree'
-"
+
+" Nerd_commenteer
+Plugin 'scrooloose/nerdcommenter'
+
+
 " Plugin 'klen/python-mode'
 " all of your plugins must be added before the following line
 call vundle#end()            " required
@@ -107,17 +111,19 @@ set incsearch
 " highlight matches
 set hlsearch            
 
+" Change Leader 
+let mapleader="," 
 
 " color scheme of code
 colorscheme gruvbox
 
 " set background colour
-set background=dark
+set background=dark  
 
 
 if has('gui_running')
 	" no toolbar
- 	set guioptions-=T  
+	set guioptions-=T  
 	" Ensure window is maximised when opened
  	set lines=1000 columns=999
 
@@ -210,21 +216,24 @@ if has('persistent_undo')
 endif
 
 "==============commenting blocks of code======================
-augroup configgroup
-	autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
-	autocmd FileType sh,ruby,python   let b:comment_leader = '# '
-	autocmd FileType conf,fstab       let b:comment_leader = '# '
-	autocmd FileType tex              let b:comment_leader = '% '
-	autocmd FileType mail             let b:comment_leader = '> '
-	autocmd FileType vim              let b:comment_leader = '" '
-	autocmd FileType octave              let b:comment_leader = '% '
-	autocmd FileType nasm              let b:comment_leader = '; '
-	noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
-augroup END
+" Using NerdCommenter instead
+let NERDSpaceDelims=1
+
+" augroup configgroup
+" 	autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
+" 	autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+" 	autocmd FileType conf,fstab       let b:comment_leader = '# '
+" 	autocmd FileType tex              let b:comment_leader = '% '
+" 	autocmd FileType mail             let b:comment_leader = '> '
+" 	autocmd FileType vim              let b:comment_leader = '" '
+" 	autocmd FileType octave              let b:comment_leader = '% '
+" 	autocmd FileType nasm              let b:comment_leader = '; '
+" 	noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+" 	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+" augroup END
 
 "============== Python Code folding=========
-set foldmethod=indent
+set foldmethod=manual
 nnoremap <space> za
 vnoremap <space> zf
 
