@@ -17,3 +17,5 @@ Then run the following in Vim :
 * [QuickRun](https://github.com/thinca/vim-quickrun) - Execute files from Vim 
 * [Fugitive](https://github.com/tpope/vim-fugitive) - Git wrapper 
 * [Jedi](https://github.com/davidhalter/jedi-vim) - Autocompletion for python 
+* [NerdTree](https://github.com/scrooloose/nerdtree) - File Manager for vim
+* [NerdCommenter](https://github.com/scrooloose/nerdcommenter) - For commenting Code 
