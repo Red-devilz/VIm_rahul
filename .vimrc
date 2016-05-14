@@ -33,6 +33,9 @@ Plugin 'scrooloose/nerdtree'
 " Nerd_commenteer
 Plugin 'scrooloose/nerdcommenter'
 
+" PowerLine
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
 
 " Plugin 'klen/python-mode'
 " all of your plugins must be added before the following line
@@ -77,9 +80,6 @@ let g:jedi#use_splits_not_buffers = "left"
 " Use Shift + k to bring up documentation
 
 
-"==========Nerd Tree ===============
-" map <C-m> :NERDTreeToggle<CR>
-nmap <silent> <C-m> :NERDTreeToggle<CR>
 
 
 "=========Syntastic settings================
@@ -134,7 +134,6 @@ endif
 
 "Tabstop is number of spaces the tab counts for
 "set tabstop=8
-
 "Soft tabstop is number of spaces counts for when editing
 " set softtabstop=8
 
@@ -232,7 +231,7 @@ let NERDSpaceDelims=1
 " 	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 " augroup END
 
-"============== Python Code folding=========
+"============== Code folding=========
 set foldmethod=manual
 nnoremap <space> za
 vnoremap <space> zf
@@ -246,6 +245,16 @@ autocmd BufWinEnter *.* silent loadview
 nnoremap <C-l> 10<C-w>>
 nnoremap <C-h> 10<C-w><
 
+" ======= Nerd Tree settings ========
+" Always open Nerd Tree, Additionally, Start cursor in current window
+" autocmd VimEnter * NERDTree
+" autocmd VimEnter * wincmd p
+
+" Close NerdTree if only window
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Tree toggle
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 "================change backup dirctory to tmp===========
 set backup
@@ -332,6 +341,5 @@ command -nargs=0 RunP3 Cmd python3 %
 
 " Run C script as a.out
 command -nargs=0 RunC Cmd gcc % && ./a.out 
-
 
 " =================================================
