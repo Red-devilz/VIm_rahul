@@ -33,9 +33,23 @@ Plugin 'scrooloose/nerdtree'
 " Nerd_commenteer
 Plugin 'scrooloose/nerdcommenter'
 
+" Tmux Syntax
+Plugin 'tmux-plugins/vim-tmux'
+
+" Tmux navigation
+Plugin 'christoomey/vim-tmux-navigator'
+
+" Snippets 
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'scrooloose/snipmate-snippets'
+
+" You complete me
+" Plugin 'Valloric/YouCompleteMe'
+
 " PowerLine
-" Plugin 'vim-airline/vim-airline'
-" Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Plugin 'klen/python-mode'
 " all of your plugins must be added before the following line
@@ -50,6 +64,18 @@ filetype plugin indent on    " required
 " :pluginclean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
 " see :h vundle for more details or wiki for faq
+
+"===============Snippets===============
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+"===============YCM===============
+" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 
 
 "===============Jedi Settings===============
@@ -80,6 +106,13 @@ let g:jedi#use_splits_not_buffers = "left"
 " Use Shift + k to bring up documentation
 
 
+"=========Status Line================
+set laststatus=2
+let g:airline_powerline_fonts = 1
+let g:airline_theme='murmur'
+
+let g:airline_detect_modified=1 
+let g:airline#extensions#whitespace#enabled = 0
 
 
 "=========Syntastic settings================
@@ -99,7 +132,7 @@ let g:syntastic_loc_list_height=5
 
 "=========General Vim settings================
 
-"syntax highlighting
+"syntax highlightinig
 syntax enable
 
 "indentation
@@ -233,6 +266,7 @@ let NERDSpaceDelims=1
 
 "============== Code folding=========
 set foldmethod=manual
+" to use Ctrl-Space:map to : C-@
 nnoremap <space> za
 vnoremap <space> zf
 
@@ -240,10 +274,52 @@ vnoremap <space> zf
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview 
 
-" ======= Vertical split resize ========
-" resize vertical splits with Ctrl-l / Ctrl-h
-nnoremap <C-l> 10<C-w>>
-nnoremap <C-h> 10<C-w><
+" ======= Tmux settings========
+
+if exists('$TMUX')
+  function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+    let previous_winnr = winnr()
+    silent! execute "wincmd " . a:wincmd
+    if previous_winnr == winnr()
+      call system("tmux select-pane -" . a:tmuxdir)
+      redraw!
+    endif
+  endfunction
+
+  let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+  let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+  let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
+
+  nnoremap <silent> <M-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+  nnoremap <silent> <M-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+  nnoremap <silent> <M-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+  nnoremap <silent> <M-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+else
+  map <M-h> <C-w>h
+  map <M-j> <C-w>j
+  map <M-k> <C-w>k
+  map <M-l> <C-w>l
+endif
+
+
+" Add alt character
+let c='a'
+while c <= 'z'
+  exec "set <A-".c.">=\e".c
+  exec "imap \e".c." <A-".c.">"
+  let c = nr2char(1+char2nr(c))
+endw
+
+set timeout ttimeoutlen=50
+
+let g:tmux_navigator_no_mappings = 1
+
+" ======= Split management ========
+" resize vertical splits with Ctrl-w + l / Ctrl-w + h
+nnoremap <c-w>l 5<C-w>>
+nnoremap <c-w>h 5<C-w><
+nnoremap <c-w>j 5<C-w>+
+nnoremap <c-w>k 5<C-w>-
 
 " ======= Nerd Tree settings ========
 " Always open Nerd Tree, Additionally, Start cursor in current window
