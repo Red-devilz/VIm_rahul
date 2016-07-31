@@ -14,6 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 "AutoCompletion
 " Plugin 'Valloric/YouCompleteMe'
+Plugin 'ervandew/supertab'
 
 " Python AutoCompletion
 Plugin 'davidhalter/jedi-vim'
@@ -24,11 +25,14 @@ Plugin 'Syntastic'
 " Run quickrun to run the code
 Plugin 'thinca/vim-quickrun'
 
-" " plugin on GitHub repo
+" plugin on Git
 Plugin 'tpope/vim-fugitive'
 
 " File manager
 Plugin 'scrooloose/nerdtree'
+
+" git for nerdtree
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " Nerd_commenteer
 Plugin 'scrooloose/nerdcommenter'
@@ -51,6 +55,22 @@ Plugin 'scrooloose/snipmate-snippets'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+" Git plugin
+Plugin 'airblade/vim-gitgutter'
+
+"Vim-wiki
+Plugin 'vimwiki/vimwiki'
+ 
+"Vim-R Plugin
+Plugin 'vim-scripts/Vim-R-plugin'
+
+"Python Code Folding
+Plugin 'tmhedberg/SimpylFold'
+
+"Code folding
+Plugin 'Konfekt/FastFold'
+
+
 " Plugin 'klen/python-mode'
 " all of your plugins must be added before the following line
 call vundle#end()            " required
@@ -66,6 +86,7 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for faq
 
 "===============Snippets===============
+
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
@@ -75,7 +96,34 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
 
 "===============YCM===============
+"
 " let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+
+"=======SimplyFold : Pyton ===========
+
+let g:SimpylFold_docstring_preview = 1
+
+"===============Variable replace===============
+" For local replace
+"gd(select work) + V(Visual) + G(file-end) + ::S/paste(gd)///gc(keep cursor to left thrice
+nnoremap gr gdVG::s/<C-R>///gc<left><left><left>
+
+" For global replace
+nnoremap gR gdggVG::s/<C-R>///gc<left><left><left>
+
+
+" ===========Relative line nuber===========
+
+" Toggle relative line numbering using Ctrl-P
+function! NumberToggle()
+	if(&relativenumber == 1)
+		set norelativenumber
+	else
+		set relativenumber
+	endif
+endfunc
+
+nnoremap <C-l> :call NumberToggle()<cr>
 
 
 "===============Jedi Settings===============
@@ -102,11 +150,10 @@ let g:jedi#use_splits_not_buffers = "left"
 
 " Add this so that virtual environment docs also work
 
-
 " Use Shift + k to bring up documentation
 
-
 "=========Status Line================
+
 set laststatus=2
 let g:airline_powerline_fonts = 1
 let g:airline_theme='murmur'
@@ -116,6 +163,7 @@ let g:airline#extensions#whitespace#enabled = 0
 
 
 "=========Syntastic settings================
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -129,14 +177,10 @@ let g:syntastic_loc_list_height=5
 
 " use :ll to jump to the next error
 
-
 "=========General Vim settings================
 
 "syntax highlightinig
 syntax enable
-
-"indentation
-filetype indent plugin on
 
 " search as characters are entered
 set incsearch           
@@ -150,28 +194,22 @@ let mapleader=","
 " color scheme of code
 colorscheme gruvbox
 
+
 " set background colour
 set background=dark  
 
 
 if has('gui_running')
-	" no toolbar
 	set guioptions-=T  
+	" no toolbar
 	" Ensure window is maximised when opened
  	set lines=1000 columns=999
 
 else
 	set t_Co=256	
+
 endif
 
-
-"Tabstop is number of spaces the tab counts for
-"set tabstop=8
-"Soft tabstop is number of spaces counts for when editing
-" set softtabstop=8
-
-"ExpandTab inserts 4 spaces instead of the tab
-"set expandtab
 
 " keep 50 lines of command line history
 set history=50		
@@ -185,51 +223,14 @@ set number
 " Increase the height of the command line
 set cmdheight=2
 
-
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
-
-
-" ==========Only do this part when compiled with support for autocommands.=============
-
-if has("autocmd")
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
-
-  augroup END
-
-else
-
-  set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
 
 " ======.m files are octave files ===============
 
 augroup filetypedetect
-  au! BufRead,BufNewFile *.m,*.oct set filetype=octave
-  au! BufRead,BufNewFile *.s set filetype=nasm
+	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
+	au! BufRead,BufNewFile *.s set filetype=nasm
 augroup END
 
 " Put plugins and dictionaries in this dir (also on Windows)
@@ -248,6 +249,7 @@ if has('persistent_undo')
 endif
 
 "==============commenting blocks of code======================
+
 " Using NerdCommenter instead
 let NERDSpaceDelims=1
 
@@ -265,49 +267,64 @@ let NERDSpaceDelims=1
 " augroup END
 
 "============== Code folding=========
-set foldmethod=manual
+
+set foldmethod=syntax
+set foldnestmax=10
+set foldlevel=1
+set foldminlines=4
+
+let r_syntax_folding = 1 
+
+let g:vimsyn_folding ='aflmpPrt'
+
 " to use Ctrl-Space:map to : C-@
 nnoremap <space> za
 vnoremap <space> zf
 
 " Ensure cold foldings are saved
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview 
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview 
+
+autocmd BufWinLeave .* mkview
+autocmd BufWinEnter .* silent loadview 
+
+autocmd BufWinLeave .vimrc mkview
+autocmd BufWinEnter .vimrc silent loadview 
 
 " ======= Tmux settings========
 
 if exists('$TMUX')
-  function! TmuxOrSplitSwitch(wincmd, tmuxdir)
-    let previous_winnr = winnr()
-    silent! execute "wincmd " . a:wincmd
-    if previous_winnr == winnr()
-      call system("tmux select-pane -" . a:tmuxdir)
-      redraw!
-    endif
-  endfunction
+	function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+		let previous_winnr = winnr()
+		silent! execute "wincmd " . a:wincmd
+		if previous_winnr == winnr()
+			call system("tmux select-pane -" . a:tmuxdir)
+		  redraw!
+		endif
+	endfunction
 
-  let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
-  let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
-  let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
+	let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+	let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+	let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
 
-  nnoremap <silent> <M-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
-  nnoremap <silent> <M-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
-  nnoremap <silent> <M-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
-  nnoremap <silent> <M-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+	nnoremap <silent> <M-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+	nnoremap <silent> <M-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+	nnoremap <silent> <M-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+	nnoremap <silent> <M-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
 else
-  map <M-h> <C-w>h
-  map <M-j> <C-w>j
-  map <M-k> <C-w>k
-  map <M-l> <C-w>l
+	map <M-h> <C-w>h
+	map <M-j> <C-w>j
+	map <M-k> <C-w>k
+	map <M-l> <C-w>l
 endif
 
 
 " Add alt character
 let c='a'
 while c <= 'z'
-  exec "set <A-".c.">=\e".c
-  exec "imap \e".c." <A-".c.">"
-  let c = nr2char(1+char2nr(c))
+	exec "set <A-".c.">=\e".c
+	exec "imap \e".c." <A-".c.">"
+	let c = nr2char(1+char2nr(c))
 endw
 
 set timeout ttimeoutlen=50
@@ -315,6 +332,7 @@ set timeout ttimeoutlen=50
 let g:tmux_navigator_no_mappings = 1
 
 " ======= Split management ========
+
 " resize vertical splits with Ctrl-w + l / Ctrl-w + h
 nnoremap <c-w>l 5<C-w>>
 nnoremap <c-w>h 5<C-w><
@@ -322,6 +340,7 @@ nnoremap <c-w>j 5<C-w>+
 nnoremap <c-w>k 5<C-w>-
 
 " ======= Nerd Tree settings ========
+
 " Always open Nerd Tree, Additionally, Start cursor in current window
 " autocmd VimEnter * NERDTree
 " autocmd VimEnter * wincmd p
@@ -333,12 +352,12 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 nnoremap <C-n> :NERDTreeToggle<CR>
 
 "================change backup dirctory to tmp===========
+
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
-
 
 "=========Mappings in VIM  ===================
 
@@ -348,13 +367,18 @@ inoremap jk <Esc>
 "paste toggle(toggle between paste and no-paste mode)
 set pastetoggle=<F10>
 
+"select all text
+noremap <leader>a  ggVG
 
 "remap the copy, paste to Ctr-shift-C and Ctrl-shift-V 
 vnoremap <C-C> "+y   
 noremap <C-V>  <F10>"+p<F10>
 
+" Indent entire file
+nnoremap <leader>i gg=G
+
 " ==================Scrolling ===================
-"
+
 "smooth scrolling using Ctrl-D and Ctrl-U(note: if scrolling gets stuck in the middle then simply press Enter and continue)
 function SmoothScroll(up)
     if a:up
@@ -373,19 +397,19 @@ function SmoothScroll(up)
     endwhile
 endfunction
 
- nnoremap <C-U> :call SmoothScroll(1)<Enter>
- nnoremap <C-D> :call SmoothScroll(0)<Enter>
- inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
- inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
+nnoremap <C-U> :call SmoothScroll(1)<Enter>
+nnoremap <C-D> :call SmoothScroll(0)<Enter>
+inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
+inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
 
 
 " ================= Mouse =========================
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
-  set mouse=a
+	set mouse=a
 endif
 
-" ======================USER DEFINED COMMANDS =============
+" ===========USER DEFINED COMMANDS =============
 
 " define command Cmd(user command must begin with CAPS)
 "  :Cmd <CMD> ---- --- executes shell command
@@ -396,7 +420,7 @@ endif
 " @% refers to current file name
  
 " define command Cmd( syntax -----    :Cmd <CMD> )
-command! -nargs=+ -complete=dir Cmd execute ':silent !echo $USER"@"$HOSTNAME":~"${PWD:11}"$ "'.<q-args> |execute ':silent !'.<q-args>  | execute ':silent !read -n 1 -s'  |  execute ':redraw!'
+command! -nargs=+ -complete=dir Cmd execute ':silent !echo $USER"@Enigma:~"${PWD:11}"$ "'.<q-args> |execute ':silent !'.<q-args>  | execute ':silent !read -n 1'  |  execute ':redraw!'
 "  execute ':silent !clear' | | execute ':silent !echo \n
 
 " define command Gcc( syntax -----    :Gcc <EXEC> )
@@ -418,4 +442,17 @@ command -nargs=0 RunP3 Cmd python3 %
 " Run C script as a.out
 command -nargs=0 RunC Cmd gcc % && ./a.out 
 
-" =================================================
+" ============== Tabs ====================
+
+"Tabstop is number of spaces the tab counts for
+"set tabstop=8
+"Soft tabstop is number of spaces counts for when editing
+" set softtabstop=8
+
+"ExpandTab inserts 4 spaces instead of the tab
+set noexpandtab
+set tabstop=4
+set softtabstop=0 noexpandtab
+set shiftwidth=4
+
+

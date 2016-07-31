@@ -1,0 +1,5 @@
+.vim/bundle/
+.vim/view/
+.vim/undodir/
+.vim/__pycache__/
+

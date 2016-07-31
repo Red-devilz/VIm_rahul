@@ -1,6 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/home/rahul/Documents/C-progs'
-let g:netrw_dirhist_2='/home/rahul/Documents/C-progs/sem4/week3'
-let g:netrw_dirhist_3='/home/rahul/Documents/C-progs/sem3/lab-10'
-let g:netrw_dirhist_4='/home/rahul/Documents/git/Vim__files/.vim'
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/rahul/Documents/Analytics/markov/hmm_project'
+let g:netrw_dirhist_2='/home/rahul/Documents/python/sem4/dinic-visualization/maxflow'
+let g:netrw_dirhist_3='/home/rahul/Documents/python/sem4/dinic-visualization/gui'
+let g:netrw_dirhist_4='/home/rahul/Documents/python/sem4/dinic-visualization/maxflow'
+let g:netrw_dirhist_5='/home/rahul/Documents/python/sem4/dinic-visualization/gui'
+let g:netrw_dirhist_6='/home/rahul/Documents/python/sem4/dinic-visualization/maxflow'
+let g:netrw_dirhist_7='/home/rahul/Documents/Analytics/markov/hmm_project'

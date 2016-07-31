@@ -7,12 +7,11 @@ using namespace std;
 
 int main(void)
 {
-	int n,t;
+	int t;
 
 	cin>>t;
 	while(t--)
 	{
-		cin>>n;
 
 	}
 
@@ -24,6 +23,24 @@ snippet for "for loop template"
 for(i=0; i<n; i++)
 {
 		
+}
+endsnippet
+
+snippet gcd_fun 
+int gcd(int n1, int n2)
+{
+
+	while(1) 
+	{
+		if(n1==0)
+			return n2;
+		if(n2==0)
+			return n1;
+		if(n1 > n2)
+		    n1 = n1%n2;
+		else
+		    n2 = n2%n1;
+	}
 }
 endsnippet
 
