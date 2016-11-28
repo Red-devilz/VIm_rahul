@@ -15,7 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 "AutoCompletion
 " Plugin 'Valloric/YouCompleteMe'
 Plugin 'ervandew/supertab'
-
+	
 " Python AutoCompletion
 Plugin 'davidhalter/jedi-vim'
 
@@ -58,6 +58,9 @@ Plugin 'vim-airline/vim-airline-themes'
 " Git plugin
 Plugin 'airblade/vim-gitgutter'
 
+" Ctags
+Plugin 'majutsushi/tagbar'
+
 "Vim-wiki
 Plugin 'vimwiki/vimwiki'
  
@@ -70,14 +73,42 @@ Plugin 'tmhedberg/SimpylFold'
 "Code folding
 Plugin 'Konfekt/FastFold'
 
+"Java Completion
+" Plugin 'artur-shaik/vim-javacomplete2'
+" Plugin 'vim-scripts/javacomplete'
 
+"Completion
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neoinclude.vim'
+
+" Javascript
+Plugin 'pangloss/vim-javascript'
+
+" Coffeescript
+Plugin 'kchmck/vim-coffee-script'
+
+" NASM syntax
+Plugin 'shirk/vim-gas'
+
+" SQL
+Plugin 'shmup/vim-sql-syntax'
+
+" Markdown
+Plugin 'suan/vim-instant-markdown'
+
+"Prolog
+Plugin 'adimit/prolog.vim'
+			
 " Plugin 'klen/python-mode'
 " all of your plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " to ignore plugin indent changes, instead use:
+
+" Omni Completion ============
 "filetype plugin on
-"
+set omnifunc=syntaxcomplete#Complete
+
 " brief help
 " :pluginlist       - lists configured plugins
 " :plugininstall    - installs plugins; append `!` to update or just :pluginupdate
@@ -99,7 +130,7 @@ let g:UltiSnipsEditSplit="vertical"
 "
 " let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 
-"=======SimplyFold : Pyton ===========
+"=======SimplyFold : Python ===========
 
 let g:SimpylFold_docstring_preview = 1
 
@@ -111,6 +142,19 @@ nnoremap gr gdVG::s/<C-R>///gc<left><left><left>
 " For global replace
 nnoremap gR gdggVG::s/<C-R>///gc<left><left><left>
 
+
+" ================  Java ======================
+
+
+" ================ Markdown ======================
+let g:instant_markdown_autostart = 0
+let g:instant_markdown_slow = 1
+
+" ================  Clang ======================
+ " path to directory where library can be found
+let g:clang_library_path='/usr/lib/llvm-3.8/lib'
+let g:clang_complete_auto = 1
+let g:clang_complete_copen = 1
 
 " ===========Relative line nuber===========
 
@@ -124,6 +168,49 @@ function! NumberToggle()
 endfunc
 
 nnoremap <C-l> :call NumberToggle()<cr>
+
+
+" ============== SuperTab=================
+let b:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
+let g:SuperTabMappingForward = '<c-n>'
+let g:SuperTabMappingBackward = '<c-p>'
+
+" ============NeoComplete===================
+
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+
+let g:neocomplete#disable_auto_complete=1
+
+let g:neocomplete#enable_auto_select = 0
+
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 4
+
+inoremap <expr><Tab> pumvisible() ? "\<C-n>" : neocomplete#start_manual_complete('buffer')
+
+
+" " Max elements in Popup
+let g:neocomplete#max_list=30
+
+
+" Disable Preview
+set completeopt-=preview
+
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType python NeoCompleteLock
+autocmd FileType python3 NeoCompleteLock
 
 
 "===============Jedi Settings===============
@@ -168,6 +255,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+let g:syntastic_cpp_compiler_options = '-std=c++11'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -231,6 +319,7 @@ set backspace=indent,eol,start
 augroup filetypedetect
 	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
 	au! BufRead,BufNewFile *.s set filetype=nasm
+	au! BufRead,BufNewFile *.S set filetype=gas
 augroup END
 
 " Put plugins and dictionaries in this dir (also on Windows)
@@ -270,8 +359,8 @@ let NERDSpaceDelims=1
 
 set foldmethod=syntax
 set foldnestmax=10
-set foldlevel=1
-set foldminlines=4
+set foldlevel=0
+set foldminlines=0
 
 let r_syntax_folding = 1 
 
@@ -287,6 +376,18 @@ vnoremap <space> zf
 
 autocmd BufWinLeave .* mkview
 autocmd BufWinEnter .* silent loadview 
+
+autocmd BufWinLeave *.md mkview
+autocmd BufWinEnter *.md silent loadview 
+
+autocmd BufWinLeave *.txt mkview
+autocmd BufWinEnter *.txt silent loadview 
+
+autocmd BufWinLeave *.html mkview
+autocmd BufWinEnter *.html silent loadview 
+
+autocmd BufWinLeave *.tex mkview
+autocmd BufWinEnter *.tex silent loadview 
 
 autocmd BufWinLeave .vimrc mkview
 autocmd BufWinEnter .vimrc silent loadview 
@@ -377,6 +478,20 @@ noremap <C-V>  <F10>"+p<F10>
 " Indent entire file
 nnoremap <leader>i gg=G
 
+" Indent entire file
+nnoremap <leader>s :SyntasticToggleMode<CR>
+
+" Indent entire file
+nnoremap <leader>h :nohls<CR>
+
+" TagBar 
+nmap <leader>t :TagbarToggle<CR>
+
+"Ctags newtab and vsplit
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+set tags=./tags;/
+
 " ==================Scrolling ===================
 
 "smooth scrolling using Ctrl-D and Ctrl-U(note: if scrolling gets stuck in the middle then simply press Enter and continue)
@@ -441,6 +556,9 @@ command -nargs=0 RunP3 Cmd python3 %
 
 " Run C script as a.out
 command -nargs=0 RunC Cmd gcc % && ./a.out 
+
+" ================Tab pages =============
+
 
 " ============== Tabs ====================
 
