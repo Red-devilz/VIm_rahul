@@ -12,9 +12,8 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-"AutoCompletion
-" Plugin 'Valloric/YouCompleteMe'
-Plugin 'ervandew/supertab'
+" Tab Key
+" Plugin 'ervandew/supertab'
 	
 " Python AutoCompletion
 Plugin 'davidhalter/jedi-vim'
@@ -27,6 +26,14 @@ Plugin 'thinca/vim-quickrun'
 
 " plugin on Git
 Plugin 'tpope/vim-fugitive'
+
+" Neocomplete
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neoinclude.vim'
+
+" Snippets 
+Plugin 'Shougo/neosnippet'
+Plugin 'Shougo/neosnippet-snippets'
 
 " File manager
 Plugin 'scrooloose/nerdtree'
@@ -42,14 +49,6 @@ Plugin 'tmux-plugins/vim-tmux'
 
 " Tmux navigation
 Plugin 'christoomey/vim-tmux-navigator'
-
-" Snippets 
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'scrooloose/snipmate-snippets'
-
-" You complete me
-" Plugin 'Valloric/YouCompleteMe'
 
 " PowerLine
 Plugin 'vim-airline/vim-airline'
@@ -77,10 +76,6 @@ Plugin 'Konfekt/FastFold'
 " Plugin 'artur-shaik/vim-javacomplete2'
 " Plugin 'vim-scripts/javacomplete'
 
-"Completion
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'Shougo/neoinclude.vim'
-
 " Javascript
 Plugin 'pangloss/vim-javascript'
 
@@ -98,15 +93,17 @@ Plugin 'suan/vim-instant-markdown'
 
 "Prolog
 Plugin 'adimit/prolog.vim'
-			
-" Plugin 'klen/python-mode'
+
+"Fuzzy file finding
+Plugin 'ctrlpvim/ctrlp.vim'
+
 " all of your plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " to ignore plugin indent changes, instead use:
 
 " Omni Completion ============
-"filetype plugin on
+
 set omnifunc=syntaxcomplete#Complete
 
 " brief help
@@ -116,19 +113,6 @@ set omnifunc=syntaxcomplete#Complete
 "
 " see :h vundle for more details or wiki for faq
 
-"===============Snippets===============
-
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-"===============YCM===============
-"
-" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 
 "=======SimplyFold : Python ===========
 
@@ -143,9 +127,6 @@ nnoremap gr gdVG::s/<C-R>///gc<left><left><left>
 nnoremap gR gdggVG::s/<C-R>///gc<left><left><left>
 
 
-" ================  Java ======================
-
-
 " ================ Markdown ======================
 let g:instant_markdown_autostart = 0
 let g:instant_markdown_slow = 1
@@ -155,6 +136,78 @@ let g:instant_markdown_slow = 1
 let g:clang_library_path='/usr/lib/llvm-3.8/lib'
 let g:clang_complete_auto = 1
 let g:clang_complete_copen = 1
+" Disable Preview
+set completeopt-=preview
+
+" ============== Neocomplete =================
+
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+
+let g:neocomplete#enable_auto_select = 0
+let g:neocomplete#disable_auto_complete = 1
+
+" Recommended key-mappings.
+inoremap <expr><C-n>  pumvisible() ? "\<Down>" : neocomplete#start_manual_complete()
+
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+	" For no inserting <CR> key.
+	return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+
+"===============Snippets===============
+
+let g:neosnippet#snippets_directory = '/home/rahul/.vim/bundle/neosnippet-snippets/neosnippets'
+
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB>
+\ pumvisible() ? "\<C-n>" :
+\ neosnippet#expandable_or_jumpable() ?
+\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
 
 " ===========Relative line nuber===========
 
@@ -168,49 +221,6 @@ function! NumberToggle()
 endfunc
 
 nnoremap <C-l> :call NumberToggle()<cr>
-
-
-" ============== SuperTab=================
-let b:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:SuperTabMappingForward = '<c-n>'
-let g:SuperTabMappingBackward = '<c-p>'
-
-" ============NeoComplete===================
-
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-
-let g:neocomplete#disable_auto_complete=1
-
-let g:neocomplete#enable_auto_select = 0
-
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 4
-
-inoremap <expr><Tab> pumvisible() ? "\<C-n>" : neocomplete#start_manual_complete('buffer')
-
-
-" " Max elements in Popup
-let g:neocomplete#max_list=30
-
-
-" Disable Preview
-set completeopt-=preview
-
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType python NeoCompleteLock
-autocmd FileType python3 NeoCompleteLock
 
 
 "===============Jedi Settings===============
@@ -314,7 +324,7 @@ set cmdheight=2
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-" ======.m files are octave files ===============
+" ====== Detect Files ===============
 
 augroup filetypedetect
 	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
@@ -452,6 +462,15 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " Tree toggle
 nnoremap <C-n> :NERDTreeToggle<CR>
 
+" ================= CtrlP ==================
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     "
+
+
 "================change backup dirctory to tmp===========
 
 set backup
@@ -517,6 +536,23 @@ nnoremap <C-D> :call SmoothScroll(0)<Enter>
 inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
 inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
 
+"================== Vim Wiki=======================
+
+let g:vimwiki_list = [{'path': '$HOME/Documents/vim/wiki',
+          \ 'template_path': '$HOME/Documents/vim/wiki/templates',
+          \ 'template_default': 'def_template',
+          \ 'template_ext': '.html'}]
+
+" let wiki = {}
+" let wiki.path = '$HOME/Documents/vim/wiki'
+" let wiki.nested_syntaxes = {'python': 'python', 'cpp': 'cpp'}
+
+" let wiki.template_path =  '$HOME/Documents/vim/wiki/templates'
+" let wiki.template_default = 'def_template'
+" let wiki.template_ext= '.html'
+let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr, pre, script'
+
+
 
 " ================= Mouse =========================
 " In many terminal emulators the mouse works just fine, thus enable it.
@@ -556,9 +592,6 @@ command -nargs=0 RunP3 Cmd python3 %
 
 " Run C script as a.out
 command -nargs=0 RunC Cmd gcc % && ./a.out 
-
-" ================Tab pages =============
-
 
 " ============== Tabs ====================
 
