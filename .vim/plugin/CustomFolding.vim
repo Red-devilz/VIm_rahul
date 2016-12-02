@@ -1,6 +1,3 @@
-
-
-
 " Customized version of folded text, idea by 
 " http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
 fu! CustomFoldText(string) "{{{1
@@ -63,4 +60,3 @@ endf
 
 set foldtext=CustomFoldText('.')
 " set foldtext = MyFoldText()
-
