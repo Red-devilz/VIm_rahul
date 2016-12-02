@@ -9,7 +9,6 @@ Run the following commands in the terminal :
 Then run the following in Vim :  
     `:PluginInstall`
 
-
 ## Plugins
 
 * [Vundle](https://github.com/VundleVim/Vundle.vim) - Vim plugin manager 
