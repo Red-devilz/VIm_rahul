@@ -31,7 +31,7 @@ Then run the following in Vim :
 * [Vim GitGutter](https://github.com/airblade/vim-gitgutter) - Vim line changes indicator(for git commits)
 * [Tagbar](https://github.com/vim-scripts/Tagbar) - Ctags of current file
 * [VimWiki](https://github.com/vimwiki/vimwiki) - Maintaining a wiki/notes
-* [Clang Complete](https://github.com/Rip-Rip/clang_complete) - C++, C syntax completion
+* [Clang Complete](https://github.com/myint/clang_complete) - C++, C syntax completion
 * [Vim R-Plugin](https://github.com/vim-scripts/Vim-R-plugin) - R syntax for Vun
 * [Vim-Javascript](https://github.com/pangloss/vim-javascript) - Javascript syntax for vim
 * [Vim-Coffeescript](https://github.com/kchmck/vim-coffee-script) - Coffeescript syntax for Vim
