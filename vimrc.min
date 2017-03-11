@@ -1,0 +1,130 @@
+
+" ==== Index SYntax Highlighting ====
+filetype plugin on
+filetype indent on
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+syntax enable
+
+
+"====  Color scheme ====
+colo torte
+set background=dark  
+
+" === General Vim settings ==
+set number
+
+let mapleader=","
+
+set so=7
+set ruler
+set cmdheight=2
+
+" Make backspace work
+set backspace=eol,start,indent
+
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set lazyredraw
+
+" Text center of screen
+set so=5
+
+" ===== code_folding =======]
+
+set foldmethod=syntax
+set foldnestmax=4
+set foldlevel=0
+set foldminlines=0
+"
+" to use Ctrl-Space:map to : C-@
+nnoremap <space> za
+vnoremap <space> zf
+
+" ========= Mouse ===========
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+	set mouse=a
+endif
+
+" ===== Tabs ======
+"ExpandTab inserts 4 spaces instead of the tab
+set noexpandtab
+set tabstop=4
+set softtabstop=0 noexpandtab
+set shiftwidth=4
+
+" be smart when using tabs ;)
+set smarttab
+
+" Linebreak on 100 characters
+set lbr
+set tw=100
+
+"============= Menu ====================
+" Turn on the WiLd menu
+set wildmenu
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+
+" ==================Scrolling ===================
+
+"smooth scrolling using Ctrl-D and Ctrl-U(note: if scrolling gets stuck in the middle then simply press Enter and continue)
+function SmoothScroll(up)
+    if a:up
+        let scrollaction="\<C-y>"
+    else
+        let scrollaction="\<C-e>"
+    endif
+    exec "normal " . scrollaction
+    redraw
+    let counter=1
+    while counter<&scroll
+        let counter+=1
+        sleep 10m
+        redraw
+        exec "normal " . scrollaction
+    endwhile
+endfunction
+
+nnoremap <C-U> :call SmoothScroll(1)<Enter>
+nnoremap <C-D> :call SmoothScroll(0)<Enter>
+inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
+inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
+
+
+" == Backup files encoding ==
+set nowb
+set nobackup
+set noswapfile
+set ffs=unix,dos,mac
+set encoding=utf8
+
+
+"=========Mappings in VIM  ===================
+inoremap jk <Esc>
+
+"remap the copy, paste to Ctr-shift-C and Ctrl-shift-V 
+vnoremap <C-C> "+y   
+
+" Indent entire file
+nnoremap <leader>i gg=G
+
+" Indent entire file
+nnoremap <leader>s :SyntasticToggleMode<CR>
+
+" Indent entire file
+nnoremap <leader>h :nohls<CR>
+noremap <C-V>  <F10>"+p<F10>
+
+
+"Ctags newtab and vsplit
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+set tags=./tags;/
