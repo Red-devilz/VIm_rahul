@@ -1,0 +1,195 @@
+" =================Vundle settings=================
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+"Automatic syntax checking
+Plugin 'Syntastic'
+
+" plugin on Git
+Plugin 'tpope/vim-fugitive'
+
+" File manager
+Plugin 'scrooloose/nerdtree'
+
+" Nerd_commenteer
+Plugin 'scrooloose/nerdcommenter'
+
+" all of your plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" to ignore plugin indent changes, instead use:
+
+" Omni Completion ============
+set omnifunc=syntaxcomplete#Complete
+
+" brief help
+" :pluginlist       - lists configured plugins
+" :plugininstall    - installs plugins; append `!` to update or just :pluginupdate
+" :pluginclean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for faq
+
+"=========Syntastic settings================
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_loc_list_height=5
+" let g:syntastic_auto_jump = 2
+
+" use :ll to jump to the next error
+
+"=========General Vim settings================
+
+"syntax highlightinig
+syntax enable
+
+" search as characters are entered
+set incsearch           
+
+" highlight matches
+set hlsearch            
+
+" Change Leader 
+let mapleader="," 
+
+" color scheme of code
+colorscheme gruvbox
+
+" set background colour
+set background=dark  
+
+
+if has('gui_running')
+	set guioptions-=T  
+ 	set lines=1000 columns=999
+
+else
+	set t_Co=256	
+
+endif
+
+
+" keep 50 lines of command line history
+set history=50		
+
+" show the cursor position all the time
+set ruler		
+
+"show line number
+set number
+
+" Increase the height of the command line
+set cmdheight=2
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+let vimDir = '$HOME/.vim'
+let &runtimepath.=','.vimDir
+
+"======== Keep undo history across sessions by storing it in a file==========
+
+if has('persistent_undo')
+    let myUndoDir = expand(vimDir . '/undodir')
+    " Create dirs
+    call system('mkdir ' . vimDir)
+    call system('mkdir ' . myUndoDir)
+    let &undodir = myUndoDir
+    set undofile
+endif
+
+"==============commenting blocks of code======================
+
+" NerdCommenter instead
+let NERDSpaceDelims=1
+"
+" ======= Nerd Tree settings ========
+
+" Close NerdTree if only window
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Tree toggle
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     "
+
+"================change backup dirctory to tmp===========
+
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupskip=/tmp/*,/private/tmp/*
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set writebackup
+
+"=========Mappings in VIM  ===================
+
+"Map Esc key to jk 
+inoremap jk <Esc>
+
+"select all text
+noremap <leader>a  ggVG
+
+" Indent entire file
+nnoremap <leader>i gg=G
+
+" ==================Scrolling ===================
+
+"smooth scrolling using Ctrl-D and Ctrl-U(note: if scrolling gets stuck in the middle then simply press Enter and continue)
+function SmoothScroll(up)
+    if a:up
+        let scrollaction="\<C-y>"
+    else
+        let scrollaction="\<C-e>"
+    endif
+    exec "normal " . scrollaction
+    redraw
+    let counter=1
+    while counter<&scroll
+        let counter+=1
+        sleep 10m
+        redraw
+        exec "normal " . scrollaction
+    endwhile
+endfunction
+
+nnoremap <C-U> :call SmoothScroll(1)<Enter>
+nnoremap <C-D> :call SmoothScroll(0)<Enter>
+inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
+inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
+
+
+" ================= Mouse =========================
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+	set mouse=a
+endif
+
+
+"Tabstop is number of spaces the tab counts for
+"set tabstop=8
+"Soft tabstop is number of spaces counts for when editing
+" set softtabstop=8
+
+"ExpandTab inserts 4 spaces instead of the tab
+set noexpandtab
+set tabstop=4
+set softtabstop=0 noexpandtab
+set shiftwidth=4
+
+
