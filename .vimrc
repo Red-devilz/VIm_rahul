@@ -14,7 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Tab Key
 " Plugin 'ervandew/supertab'
-	
+
 " Python AutoCompletion
 Plugin 'davidhalter/jedi-vim'
 
@@ -31,7 +31,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'Shougo/neoinclude.vim'
 
-" Snippets 
+" Snippets
 Plugin 'Shougo/neosnippet'
 Plugin 'Shougo/neosnippet-snippets'
 
@@ -62,7 +62,7 @@ Plugin 'majutsushi/tagbar'
 
 "Vim-wiki
 Plugin 'vimwiki/vimwiki'
- 
+
 "Vim-R Plugin
 Plugin 'vim-scripts/Vim-R-plugin'
 
@@ -97,9 +97,20 @@ Plugin 'adimit/prolog.vim'
 "Fuzzy file finding
 Plugin 'ctrlpvim/ctrlp.vim'
 
+"Latex
+Plugin 'vim-latex/vim-latex'
+
+" Beuatify Code
+Plugin 'Chiel92/vim-autoformat'
+
+" Lua syntax
+Plugin 'tbastos/vim-lua'
+
+
 " all of your plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+syntax enable
 " to ignore plugin indent changes, instead use:
 
 " Omni Completion ============
@@ -132,7 +143,7 @@ let g:instant_markdown_autostart = 0
 let g:instant_markdown_slow = 1
 
 " ================  Clang ======================
- " path to directory where library can be found
+" path to directory where library can be found
 let g:clang_library_path='/usr/lib/llvm-3.8/lib'
 let g:clang_complete_auto = 1
 let g:clang_complete_copen = 1
@@ -150,14 +161,14 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
+			\ 'default' : '',
+			\ 'vimshell' : $HOME.'/.vimshell_hist',
+			\ 'scheme' : $HOME.'/.gosh_completions'
+			\ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
+	let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
@@ -183,7 +194,7 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+	let g:neocomplete#sources#omni#input_patterns = {}
 endif
 "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
@@ -201,12 +212,12 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
 imap <expr><TAB>
-\ pumvisible() ? "\<C-n>" :
-\ neosnippet#expandable_or_jumpable() ?
-\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+			\ pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 
 " ===========Relative line nuber===========
@@ -227,16 +238,19 @@ nnoremap <C-l> :call NumberToggle()<cr>
 
 " Dont open box when autocompletion occurs
 autocmd FileType python setlocal completeopt-=preview
+autocmd FileType python setlocal omnifunc=jedi#completions
+
+let g:jedi#auto_vim_configuration = 0
 
 " Disable autocompletions
-" let g:jedi#completions_enabled = 0
+let g:jedi#completions_enabled = 0
 
 " Do not Autocomplete on Dots
 let g:jedi#popup_on_dot = 0
 
 
 " AutoCompletion key
-let g:jedi#completions_command = "<C-n>"
+" let g:jedi#completions_command = "<C-n>"
 
 " Always select first popup
 let g:jedi#popup_select_first = 0
@@ -245,9 +259,27 @@ let g:jedi#popup_select_first = 0
 " So that vim splits are'nt affected
 let g:jedi#use_splits_not_buffers = "left"
 
+" Jedi + Neocomplete
+if !exists('g:neocomplete#force_omni_input_patterns')
+	let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+
 " Add this so that virtual environment docs also work
 
 " Use Shift + k to bring up documentation
+
+
+" ========== Latex ==================
+
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor='latex'
+set iskeyword+=:
+let g:Imap_UsePlaceHolders = 0
+
+
+let g:Tex_CompileRule_pdf = 'pdflatex --interaction=nonstopmode $*'
+let g:Tex_CompileRule_dvi = 'pdflatex --interaction=nonstopmode $*'
 
 "=========Status Line================
 
@@ -255,7 +287,7 @@ set laststatus=2
 let g:airline_powerline_fonts = 1
 let g:airline_theme='murmur'
 
-let g:airline_detect_modified=1 
+let g:airline_detect_modified=1
 let g:airline#extensions#whitespace#enabled = 0
 
 
@@ -272,48 +304,50 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
 " let g:syntastic_auto_jump = 2
+let g:syntastic_mode_map = { 'passive_filetypes': ['tex'] }
 
 " use :ll to jump to the next error
 
 "=========General Vim settings================
 
 "syntax highlightinig
-syntax enable
 
 " search as characters are entered
-set incsearch           
+set incsearch
 
 " highlight matches
-set hlsearch            
+set hlsearch
 
-" Change Leader 
-let mapleader="," 
+" Change Leader
+let mapleader=","
 
 " color scheme of code
 colorscheme gruvbox
 
 
 " set background colour
-set background=dark  
+set background=dark
+" highlight Normal ctermbg=1500
+" highlight Folded ctermfg=5638
 
 
 if has('gui_running')
-	set guioptions-=T  
+	set guioptions-=T
 	" no toolbar
 	" Ensure window is maximised when opened
- 	set lines=1000 columns=999
+	set lines=1000 columns=999
 
 else
-	set t_Co=256	
+	set t_Co=256
 
 endif
 
 
 " keep 50 lines of command line history
-set history=50		
+set history=50
 
 " show the cursor position all the time
-set ruler		
+set ruler
 
 "show line number
 set number
@@ -339,12 +373,12 @@ let &runtimepath.=','.vimDir
 "======== Keep undo history across sessions by storing it in a file==========
 
 if has('persistent_undo')
-    let myUndoDir = expand(vimDir . '/undodir')
-    " Create dirs
-    call system('mkdir ' . vimDir)
-    call system('mkdir ' . myUndoDir)
-    let &undodir = myUndoDir
-    set undofile
+	let myUndoDir = expand(vimDir . '/undodir')
+	" Create dirs
+	call system('mkdir ' . vimDir)
+	call system('mkdir ' . myUndoDir)
+	let &undodir = myUndoDir
+	set undofile
 endif
 
 "==============commenting blocks of code======================
@@ -353,26 +387,27 @@ endif
 let NERDSpaceDelims=1
 
 " augroup configgroup
-" 	autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
-" 	autocmd FileType sh,ruby,python   let b:comment_leader = '# '
-" 	autocmd FileType conf,fstab       let b:comment_leader = '# '
-" 	autocmd FileType tex              let b:comment_leader = '% '
-" 	autocmd FileType mail             let b:comment_leader = '> '
-" 	autocmd FileType vim              let b:comment_leader = '" '
-" 	autocmd FileType octave              let b:comment_leader = '% '
-" 	autocmd FileType nasm              let b:comment_leader = '; '
-" 	noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-" 	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+"	autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
+"	autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+"	autocmd FileType conf,fstab       let b:comment_leader = '# '
+"	autocmd FileType tex              let b:comment_leader = '% '
+"	autocmd FileType mail             let b:comment_leader = '> '
+"	autocmd FileType vim              let b:comment_leader = '" '
+"	autocmd FileType octave              let b:comment_leader = '% '
+"	autocmd FileType nasm              let b:comment_leader = '; '
+"	noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+"	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 " augroup END
 
 "============== Code folding=========
 
 set foldmethod=syntax
-set foldnestmax=10
+set foldnestmax=4
 set foldlevel=0
+set foldlevelstart=1
 set foldminlines=0
 
-let r_syntax_folding = 1 
+let r_syntax_folding = 1
 
 let g:vimsyn_folding ='aflmpPrt'
 
@@ -382,25 +417,25 @@ vnoremap <space> zf
 
 " Ensure cold foldings are saved
 " autocmd BufWinLeave *.* mkview
-" autocmd BufWinEnter *.* silent loadview 
+" autocmd BufWinEnter *.* silent loadview
 
 autocmd BufWinLeave .* mkview
-autocmd BufWinEnter .* silent loadview 
+autocmd BufWinEnter .* silent loadview
 
 autocmd BufWinLeave *.md mkview
-autocmd BufWinEnter *.md silent loadview 
+autocmd BufWinEnter *.md silent loadview
 
 autocmd BufWinLeave *.txt mkview
-autocmd BufWinEnter *.txt silent loadview 
+autocmd BufWinEnter *.txt silent loadview
 
 autocmd BufWinLeave *.html mkview
-autocmd BufWinEnter *.html silent loadview 
+autocmd BufWinEnter *.html silent loadview
 
 autocmd BufWinLeave *.tex mkview
-autocmd BufWinEnter *.tex silent loadview 
+autocmd BufWinEnter *.tex silent loadview
 
 autocmd BufWinLeave .vimrc mkview
-autocmd BufWinEnter .vimrc silent loadview 
+autocmd BufWinEnter .vimrc silent loadview
 
 " ======= Tmux settings========
 
@@ -410,7 +445,7 @@ if exists('$TMUX')
 		silent! execute "wincmd " . a:wincmd
 		if previous_winnr == winnr()
 			call system("tmux select-pane -" . a:tmuxdir)
-		  redraw!
+			redraw!
 		endif
 	endfunction
 
@@ -481,7 +516,7 @@ set writebackup
 
 "=========Mappings in VIM  ===================
 
-"Map Esc key to jk 
+"Map Esc key to jk
 inoremap jk <Esc>
 
 "paste toggle(toggle between paste and no-paste mode)
@@ -490,8 +525,11 @@ set pastetoggle=<F10>
 "select all text
 noremap <leader>a  ggVG
 
-"remap the copy, paste to Ctr-shift-C and Ctrl-shift-V 
-vnoremap <C-C> "+y   
+" Remap vertical selection
+nnoremap <C-E> <C-V>
+
+"remap the copy, paste to Ctr-shift-C and Ctrl-shift-V
+vnoremap <C-C> "+y
 noremap <C-V>  <F10>"+p<F10>
 
 " Indent entire file
@@ -503,7 +541,7 @@ nnoremap <leader>s :SyntasticToggleMode<CR>
 " Indent entire file
 nnoremap <leader>h :nohls<CR>
 
-" TagBar 
+" TagBar
 nmap <leader>t :TagbarToggle<CR>
 
 "Ctags newtab and vsplit
@@ -515,20 +553,20 @@ set tags=./tags;/
 
 "smooth scrolling using Ctrl-D and Ctrl-U(note: if scrolling gets stuck in the middle then simply press Enter and continue)
 function SmoothScroll(up)
-    if a:up
-        let scrollaction="\<C-y>"
-    else
-        let scrollaction="\<C-e>"
-    endif
-    exec "normal " . scrollaction
-    redraw
-    let counter=1
-    while counter<&scroll
-        let counter+=1
-        sleep 10m
-        redraw
-        exec "normal " . scrollaction
-    endwhile
+	if a:up
+		let scrollaction="\<C-y>"
+	else
+		let scrollaction="\<C-e>"
+	endif
+	exec "normal " . scrollaction
+	redraw
+	let counter=1
+	while counter<&scroll
+		let counter+=1
+		sleep 10m
+		redraw
+		exec "normal " . scrollaction
+	endwhile
 endfunction
 
 nnoremap <C-U> :call SmoothScroll(1)<Enter>
@@ -536,12 +574,22 @@ nnoremap <C-D> :call SmoothScroll(0)<Enter>
 inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
 inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
 
+" Text center of screen
+set so=5
+
+"============= Menu ====================
+" Turn on the WiLd menu
+set wildmenu
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+
 "================== Vim Wiki=======================
 
 let g:vimwiki_list = [{'path': '$HOME/Documents/vim/wiki',
-          \ 'template_path': '$HOME/Documents/vim/wiki/templates',
-          \ 'template_default': 'def_template',
-          \ 'template_ext': '.html'}]
+			\ 'template_path': '$HOME/Documents/vim/wiki/templates',
+			\ 'template_default': 'def_template',
+			\ 'template_ext': '.html'}]
 
 " let wiki = {}
 " let wiki.path = '$HOME/Documents/vim/wiki'
@@ -569,14 +617,14 @@ endif
 " then wait for key-stroke(read any character)
 " redraw screen, go back to VIM
 " @% refers to current file name
- 
+
 " define command Cmd( syntax -----    :Cmd <CMD> )
 command! -nargs=+ -complete=dir Cmd execute ':silent !echo $USER"@Enigma:~"${PWD:11}"$ "'.<q-args> |execute ':silent !'.<q-args>  | execute ':silent !read -n 1'  |  execute ':redraw!'
 "  execute ':silent !clear' | | execute ':silent !echo \n
 
 " define command Gcc( syntax -----    :Gcc <EXEC> )
 command! -nargs=+ -complete=dir Gcc Cmd gcc % -o <q-args>
- 
+
 " define command Make( syntax ------  :Make <FILENAME> )
 command! -nargs=+ -complete=dir Make Cmd make -f <q-args>
 
@@ -585,13 +633,16 @@ command -nargs=0 Spell setlocal spell spelllang=en_gb
 
 
 " Run python script
-command -nargs=0 RunP Cmd python % 
+command -nargs=0 RunP Cmd python %
 
 " Run python3 script
-command -nargs=0 RunP3 Cmd python3 % 
+command -nargs=0 RunP3 Cmd python3 %
 
 " Run C script as a.out
-command -nargs=0 RunC Cmd gcc % && ./a.out 
+command -nargs=0 RunC Cmd gcc % && ./a.out
+
+" ================Tab pages =============
+
 
 " ============== Tabs ====================
 
@@ -605,5 +656,4 @@ set noexpandtab
 set tabstop=4
 set softtabstop=0 noexpandtab
 set shiftwidth=4
-
 
