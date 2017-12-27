@@ -98,13 +98,19 @@ Plugin 'adimit/prolog.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 
 "Latex
-Plugin 'vim-latex/vim-latex'
+Plugin 'lervag/vimtex'
 
 " Beuatify Code
 Plugin 'Chiel92/vim-autoformat'
 
 " Lua syntax
 Plugin 'tbastos/vim-lua'
+
+" Gruvbox
+Plugin 'morhetz/gruvbox'
+
+" Startup
+Plugin 'mhinz/vim-startify'
 
 
 " all of your plugins must be added before the following line
@@ -271,15 +277,37 @@ let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*f
 
 
 " ========== Latex ==================
+let maplocalleader = ","
+let g:tex_flavor='tex'
 
-set grepprg=grep\ -nH\ $*
-let g:tex_flavor='latex'
-set iskeyword+=:
-let g:Imap_UsePlaceHolders = 0
+nnoremap <leader>xl :!xelatex %
+
+let g:vimtex_compiler_latexmk = {
+\ 'backend' : 'process',
+\ 'background' : 1,
+\ 'build_dir' : '',
+\ 'callback' : 0,
+\ 'continuous' : 1,
+\ 'executable' : 'latexmk',
+\ 'options' : [
+\   '-pdf',
+\   '-verbose',
+\   '-file-line-error',
+\   '-synctex=1',
+\   '-interaction=nonstopmode',
+\ ],
+\}
+
+" let g:vimtex_compiler_method='latexrun'
+
+" set grepprg=grep\ -nH\ $*
+" set iskeyword+=:
+" let g:Imap_UsePlaceHolders = 0
 
 
-let g:Tex_CompileRule_pdf = 'pdflatex --interaction=nonstopmode $*'
-let g:Tex_CompileRule_dvi = 'pdflatex --interaction=nonstopmode $*'
+" let g:Tex_CompileRule_pdf = 'pdflatex --interaction=nonstopmode $*'
+" let g:Tex_CompileRule_dvi = 'pdflatex --interaction=nonstopmode $*'
+" le g:Tex_IgnoredWarnings = 1
 
 "=========Status Line================
 
@@ -305,6 +333,9 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
 " let g:syntastic_auto_jump = 2
 let g:syntastic_mode_map = { 'passive_filetypes': ['tex'] }
+
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_args='--ignore=E305,E101,E111,E112,E113,E114,E115,E116,E121,E122,E123,E124,E125,E126,E127,E128,E129,E131,E133,E201,E202,E203,E211,E221,E222,E223,E224,E225,E226,E227,E228,E231,E241,E242,E251,E261,E262,E265,E266,E271,E272,E273,E274,E301,E302,E303,E304,E401,E402,E501,E502,E701,E702,E703,E704,E711,E712,E713,E714,E721,E731,E901,E902,W191,W291,W292,W293,W391,W503,W601,W602,W603,W604,F821,F401,F402,F403,F404,F405,F406,F407,F601,F602,F621,F622,F631,F701,F702,F703,F704,F705,F706,F707,F811,F812,F821,F822,F823,F831,F841,E999,E722'
 
 " use :ll to jump to the next error
 
@@ -433,6 +464,7 @@ autocmd BufWinEnter *.html silent loadview
 
 autocmd BufWinLeave *.tex mkview
 autocmd BufWinEnter *.tex silent loadview
+autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 autocmd BufWinLeave .vimrc mkview
 autocmd BufWinEnter .vimrc silent loadview
@@ -526,7 +558,7 @@ set pastetoggle=<F10>
 noremap <leader>a  ggVG
 
 " Remap vertical selection
-nnoremap <C-E> <C-V>
+" nnoremap <C-E> <C-V>
 
 "remap the copy, paste to Ctr-shift-C and Ctrl-shift-V
 vnoremap <C-C> "+y
@@ -573,6 +605,19 @@ nnoremap <C-U> :call SmoothScroll(1)<Enter>
 nnoremap <C-D> :call SmoothScroll(0)<Enter>
 inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
 inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
+
+" Text width
+set tw=80
+function! WidthToggle()
+	let l:menu_option = strridx(&fo, "t")
+	if( l:menu_option > 0)
+		set fo-=t
+	else
+		set fo+=t
+	endif
+endfunc
+
+nnoremap <leader>tw :call WidthToggle()<cr>
 
 " Text center of screen
 set so=5
@@ -641,8 +686,12 @@ command -nargs=0 RunP3 Cmd python3 %
 " Run C script as a.out
 command -nargs=0 RunC Cmd gcc % && ./a.out
 
-" ================Tab pages =============
 
+" ================Startup Page =============
+
+let g:startify_bookmarks = [ {'vim': '~/.vimrc'}, {'zsh' : '~/.zshrc'} ]
+let g:startify_change_to_dir = 1
+let g:startify_change_to_vcs_root = 1
 
 " ============== Tabs ====================
 
