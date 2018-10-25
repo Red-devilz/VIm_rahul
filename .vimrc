@@ -4,117 +4,125 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
+call plug#begin('~/.vim/plugged')
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" Tab Key
-" Plugin 'ervandew/supertab'
+Plug 'VundleVim/Vundle.vim'
 
 " Python AutoCompletion
-Plugin 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim'
 
 "Automatic syntax checking
-Plugin 'Syntastic'
+Plug 'vim-syntastic/syntastic'
 
 " Run quickrun to run the code
-Plugin 'thinca/vim-quickrun'
+" Plug 'thinca/vim-quickrun'
 
-" plugin on Git
-Plugin 'tpope/vim-fugitive'
+" plugin for Git, line changes
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Neocomplete
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'Shougo/neoinclude.vim'
+Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/neoinclude.vim'
 
 " Snippets
-Plugin 'Shougo/neosnippet'
-Plugin 'Shougo/neosnippet-snippets'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
 
 " File manager
-Plugin 'scrooloose/nerdtree'
-
-" git for nerdtree
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Nerd_commenteer
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 
-" Tmux Syntax
-Plugin 'tmux-plugins/vim-tmux'
-
-" Tmux navigation
-Plugin 'christoomey/vim-tmux-navigator'
+" Tmux Syntax, Navigation
+Plug 'tmux-plugins/vim-tmux'
+Plug 'christoomey/vim-tmux-navigator'
 
 " PowerLine
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-" Git plugin
-Plugin 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " Ctags
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
 "Vim-wiki
-Plugin 'vimwiki/vimwiki'
-
-"Vim-R Plugin
-Plugin 'vim-scripts/Vim-R-plugin'
+Plug 'vimwiki/vimwiki'
 
 "Python Code Folding
-Plugin 'tmhedberg/SimpylFold'
+Plug 'tmhedberg/SimpylFold'
 
 "Code folding
-Plugin 'Konfekt/FastFold'
+Plug 'Konfekt/FastFold'
+
+" Beuatify Code - python
+Plug 'tell-k/vim-autopep8'
 
 "Java Completion
-" Plugin 'artur-shaik/vim-javacomplete2'
-" Plugin 'vim-scripts/javacomplete'
+" Plug 'artur-shaik/vim-javacomplete2'
+" Plug 'vim-scripts/javacomplete'
 
 " Javascript
-Plugin 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 
 " Coffeescript
-Plugin 'kchmck/vim-coffee-script'
+" Plug 'kchmck/vim-coffee-script'
+
+"Vim-R Plug
+Plug 'vim-scripts/Vim-R-plugin'
 
 " NASM syntax
-Plugin 'shirk/vim-gas'
+" Plug 'shirk/vim-gas'
 
 " SQL
-Plugin 'shmup/vim-sql-syntax'
+" Plug 'shmup/vim-sql-syntax'
 
 " Markdown
-Plugin 'suan/vim-instant-markdown'
+Plug 'suan/vim-instant-markdown'
 
 "Prolog
-Plugin 'adimit/prolog.vim'
-
-"Fuzzy file finding
-Plugin 'ctrlpvim/ctrlp.vim'
+" Plug 'adimit/prolog.vim'
 
 "Latex
-Plugin 'lervag/vimtex'
-
-" Beuatify Code
-Plugin 'Chiel92/vim-autoformat'
+Plug 'lervag/vimtex'
+Plug 'matze/vim-tex-fold'
+" Plug 'gi1242/vim-tex-syntax'
 
 " Lua syntax
-Plugin 'tbastos/vim-lua'
+" Plug 'tbastos/vim-lua'
+
+" XML-editor
+" Plug 'sukima/xmledit'
+" Plug 'actionshrimp/vim-xpath'
+" Plug 'vim-scripts/XML-Folding'
+
+"Fuzzy file finding
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Gruvbox
-Plugin 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
+Plug 'flazz/vim-colorschemes'
 
 " Startup
-Plugin 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
+
+"Grmmar
+Plug 'rhysd/vim-grammarous'
+
+
+"SCreenshot
+Plug 'kristijanhusak/vim-carbon-now-sh'
 
 
 " all of your plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()
+
 filetype plugin indent on    " required
 syntax enable
 " to ignore plugin indent changes, instead use:
@@ -138,10 +146,10 @@ let g:SimpylFold_docstring_preview = 1
 "===============Variable replace===============
 " For local replace
 "gd(select work) + V(Visual) + G(file-end) + ::S/paste(gd)///gc(keep cursor to left thrice
-nnoremap gr gdVG::s/<C-R>///gc<left><left><left>
+" nnoremap gr gdVG::s/<C-R>///gc<left><left><left>
 
 " For global replace
-nnoremap gR gdggVG::s/<C-R>///gc<left><left><left>
+" nnoremap gR gdggVG::s/<C-R>///gc<left><left><left>
 
 
 " ================ Markdown ======================
@@ -197,6 +205,7 @@ autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -206,6 +215,16 @@ endif
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
+
+if !exists('g:neocomplete#sources#omni#input_patterns')
+	let g:neocomplete#sources#omni#input_patterns = {}
+endif
+	let g:neocomplete#sources#omni#input_patterns.tex =
+		\ '\v\\%('
+		\ . '\a*%(ref|cite)\a*%(\s*\[[^]]*\])?\s*\{[^{}]*'
+		\ . '|includegraphics%(\s*\[[^]]*\])?\s*\{[^{}]*'
+		\ . '|%(include|input)\s*\{[^{}]*'
+		\ . ')'
 
 "===============Snippets===============
 
@@ -228,7 +247,7 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " ===========Relative line nuber===========
 
-" Toggle relative line numbering using Ctrl-P
+" Toggle relative line numbering using Ctrl-l
 function! NumberToggle()
 	if(&relativenumber == 1)
 		set norelativenumber
@@ -244,6 +263,7 @@ nnoremap <C-l> :call NumberToggle()<cr>
 
 " Dont open box when autocompletion occurs
 autocmd FileType python setlocal completeopt-=preview
+autocmd FileType python setlocal complete-=i
 autocmd FileType python setlocal omnifunc=jedi#completions
 
 let g:jedi#auto_vim_configuration = 0
@@ -256,7 +276,7 @@ let g:jedi#popup_on_dot = 0
 
 
 " AutoCompletion key
-" let g:jedi#completions_command = "<C-n>"
+let g:jedi#completions_command = "<C-n>"
 
 " Always select first popup
 let g:jedi#popup_select_first = 0
@@ -282,6 +302,10 @@ let g:tex_flavor='tex'
 
 nnoremap <leader>xl :!xelatex %
 
+
+" let g:vimtex_fold_enabled = 0
+let g:vimtex_syntax_enabled = 0
+
 let g:vimtex_compiler_latexmk = {
 \ 'backend' : 'process',
 \ 'background' : 1,
@@ -297,6 +321,11 @@ let g:vimtex_compiler_latexmk = {
 \   '-interaction=nonstopmode',
 \ ],
 \}
+
+
+let g:tex_no_error = 1
+
+let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize']
 
 " let g:vimtex_compiler_method='latexrun'
 
@@ -331,12 +360,13 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
-" let g:syntastic_auto_jump = 2
+let g:syntastic_auto_jump = 2
 let g:syntastic_mode_map = { 'passive_filetypes': ['tex'] }
 
 let g:syntastic_python_checkers=['flake8']
-let g:syntastic_python_flake8_args='--ignore=E305,E101,E111,E112,E113,E114,E115,E116,E121,E122,E123,E124,E125,E126,E127,E128,E129,E131,E133,E201,E202,E203,E211,E221,E222,E223,E224,E225,E226,E227,E228,E231,E241,E242,E251,E261,E262,E265,E266,E271,E272,E273,E274,E301,E302,E303,E304,E401,E402,E501,E502,E701,E702,E703,E704,E711,E712,E713,E714,E721,E731,E901,E902,W191,W291,W292,W293,W391,W503,W601,W602,W603,W604,F821,F401,F402,F403,F404,F405,F406,F407,F601,F602,F621,F622,F631,F701,F702,F703,F704,F705,F706,F707,F811,F812,F821,F822,F823,F831,F841,E999,E722'
+" let g:syntastic_python_flake8_args='--ignore=W191,W291,W292,W293,W391,W503,W601,W602,W603,W604,F821,F401,F402,F403,F404,F405,F406,F407,F601,F602,F621,F622,F631,F701,F702,F703,F704,F705,F706,F707,F811,F812,F821,F822,F823,F831,F841,E999,E722'
 
+let g:syntastic_python_flake8_args='--ignore=W391,E116,E226,E501,F401,E722'
 " use :ll to jump to the next error
 
 "=========General Vim settings================
@@ -355,11 +385,13 @@ let mapleader=","
 " color scheme of code
 colorscheme gruvbox
 
-
 " set background colour
 set background=dark
+
+
 " highlight Normal ctermbg=1500
 " highlight Folded ctermfg=5638
+highlight Search ctermfg=9 ctermbg=8
 
 
 if has('gui_running')
@@ -370,7 +402,6 @@ if has('gui_running')
 
 else
 	set t_Co=256
-
 endif
 
 
@@ -469,6 +500,8 @@ autocmd BufRead,BufNewFile *.tex set filetype=tex
 autocmd BufWinLeave .vimrc mkview
 autocmd BufWinEnter .vimrc silent loadview
 
+autocmd FileType help wincmd L
+
 " ======= Tmux settings========
 
 if exists('$TMUX')
@@ -535,7 +568,14 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     "
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
 
 
 "================change backup dirctory to tmp===========
@@ -561,9 +601,8 @@ noremap <leader>a  ggVG
 " nnoremap <C-E> <C-V>
 
 "remap the copy, paste to Ctr-shift-C and Ctrl-shift-V
-vnoremap <C-C> "+y
-noremap <C-V>  <F10>"+p<F10>
-
+vnoremap <C-c> "+y
+noremap <C-v>  <F10>"+p<F10> 
 " Indent entire file
 nnoremap <leader>i gg=G
 
@@ -692,8 +731,25 @@ command -nargs=0 RunC Cmd gcc % && ./a.out
 let g:startify_bookmarks = [ {'vim': '~/.vimrc'}, {'zsh' : '~/.zshrc'} ]
 let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 1
+" ============== Grammarous ===============
+let g:grammarous#hooks = {}
+function! g:grammarous#hooks.on_check(errs) abort
+    nmap <buffer><C-n> <Plug>(grammarous-move-to-next-error)
+    nmap <buffer><C-p> <Plug>(grammarous-move-to-previous-error)
+    nmap <buffer><C-f> <Plug>(grammarous-fixit)
+	nmap <buffer><C-e> <Plug>(grammarous-open-info-window)
+endfunction
+
+function! g:grammarous#hooks.on_reset(errs) abort
+    nunmap <buffer><C-n>
+    nunmap <buffer><C-p>
+    nunmap <buffer><C-f>
+    nunmap <buffer><C-e>
+endfunction
+
 
 " ============== Tabs ====================
+
 
 "Tabstop is number of spaces the tab counts for
 "set tabstop=8
@@ -705,4 +761,41 @@ set noexpandtab
 set tabstop=4
 set softtabstop=0 noexpandtab
 set shiftwidth=4
+
+
+
+" =========== Set of Mappings =======
+
+" == normal ==
+" <C>-n - Nerd Tree
+" <C>-l - relative line toggle
+" <C>-p -  File search 
+" <C>-U, <C>-D scroll
+" <C>-\ - ctags open in newtab
+" gt - change tab
+" gq - word wrap
+" ,c<space> - comment
+" ,ll - latex auto compile
+" ,s - syntastic active passive
+" ,a - select all
+" ,i - Aut indent(or Autopep8)
+" ,h - Remove highlight
+" ,t - Tagbar
+" ,tw - tree width toggle
+" <space> - code fold
+" <alt>  kjlh(switch windows)
+
+" == insert ==
+" C-n - Auto-complete
+" C-K - complete trigger
+" jk - Esc
+" 
+
+" === Some useful ===
+" GrammarousCheck
+" INstantMarkdownPreview
+" Vimwiki2HTML
+" Gdiff
+
+
 
