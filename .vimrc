@@ -69,13 +69,13 @@ Plug 'tell-k/vim-autopep8'
 " Plug 'vim-scripts/javacomplete'
 
 " Javascript
-Plug 'pangloss/vim-javascript'
+" Plug 'pangloss/vim-javascript'
 
 " Coffeescript
 " Plug 'kchmck/vim-coffee-script'
 
 "Vim-R Plug
-Plug 'vim-scripts/Vim-R-plugin'
+" Plug 'vim-scripts/Vim-R-plugin'
 
 " NASM syntax
 " Plug 'shirk/vim-gas'
@@ -119,6 +119,8 @@ Plug 'rhysd/vim-grammarous'
 "SCreenshot
 Plug 'kristijanhusak/vim-carbon-now-sh'
 
+" Vim Devicons
+Plug 'ryanoasis/vim-devicons'
 
 " all of your plugins must be added before the following line
 call plug#end()
@@ -366,7 +368,7 @@ let g:syntastic_mode_map = { 'passive_filetypes': ['tex'] }
 let g:syntastic_python_checkers=['flake8']
 " let g:syntastic_python_flake8_args='--ignore=W191,W291,W292,W293,W391,W503,W601,W602,W603,W604,F821,F401,F402,F403,F404,F405,F406,F407,F601,F602,F621,F622,F631,F701,F702,F703,F704,F705,F706,F707,F811,F812,F821,F822,F823,F831,F841,E999,E722'
 
-let g:syntastic_python_flake8_args='--ignore=W391,E116,E226,E501,F401,E722'
+let g:syntastic_python_flake8_args='--ignore=W391,E116,E226,E501,F401,E722,E303'
 " use :ll to jump to the next error
 
 "=========General Vim settings================
@@ -561,6 +563,51 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Tree toggle
 nnoremap <C-n> :NERDTreeToggle<CR>
+
+let NERDTreeIgnore = ['\.pyc$']
+
+let NERDTreeChDirMode = 2
+
+
+" Vim fonts
+set encoding=UTF-8
+set guifont=DroidSansMono\ Nerd\ Font\ 11
+
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+ exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('pdf', 'blue', 'none', '#3366FF', '#151515')
+
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('yaml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('py', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('cpp', 'Red', 'none', '#ffa500', '#151515')
+
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
+
+call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('sh', 'Cyan', 'none', '#686868', '#151515')
+
 
 " ================= CtrlP ==================
 
