@@ -6,15 +6,14 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 " set rtp+=~/.vim/bundle/Vundle.vim
 " call vundle#begin()
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plug 'VundleVim/Vundle.vim'
 
 " Python AutoCompletion
-Plug 'davidhalter/jedi-vim'
+Plug 'zchee/deoplete-jedi'
 
 "Automatic syntax checking
 Plug 'vim-syntastic/syntastic'
@@ -27,7 +26,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " Neocomplete
-Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neoinclude.vim'
 
 " Snippets
@@ -390,6 +389,8 @@ colorscheme gruvbox
 " set background colour
 set background=dark
 
+hi normal guibg=NONE ctermbg=NONE
+
 
 " highlight Normal ctermbg=1500
 " highlight Folded ctermfg=5638
@@ -484,23 +485,23 @@ vnoremap <space> zf
 " autocmd BufWinEnter *.* silent loadview
 
 autocmd BufWinLeave .* mkview
-autocmd BufWinEnter .* silent loadview
+autocmd BufWinEnter .* silent! loadview
 
 autocmd BufWinLeave *.md mkview
-autocmd BufWinEnter *.md silent loadview
+autocmd BufWinEnter *.md silent! loadview
 
 autocmd BufWinLeave *.txt mkview
-autocmd BufWinEnter *.txt silent loadview
+autocmd BufWinEnter *.txt silent! loadview
 
 autocmd BufWinLeave *.html mkview
-autocmd BufWinEnter *.html silent loadview
+autocmd BufWinEnter *.html silent! loadview
 
 autocmd BufWinLeave *.tex mkview
-autocmd BufWinEnter *.tex silent loadview
+autocmd BufWinEnter *.tex silent! loadview
 autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 autocmd BufWinLeave .vimrc mkview
-autocmd BufWinEnter .vimrc silent loadview
+autocmd BufWinEnter .vimrc silent! loadview
 
 autocmd FileType help wincmd L
 
@@ -533,12 +534,12 @@ endif
 
 
 " Add alt character
-let c='a'
-while c <= 'z'
-	exec "set <A-".c.">=\e".c
-	exec "imap \e".c." <A-".c.">"
-	let c = nr2char(1+char2nr(c))
-endw
+" let c='a'
+" while c <= 'z'
+	" exec "set <A-".c.">=\e".c
+	" exec "imap \e".c." <A-".c.">"
+	" let c = nr2char(1+char2nr(c))
+" endw
 
 set timeout ttimeoutlen=50
 
@@ -749,29 +750,8 @@ endif
 " redraw screen, go back to VIM
 " @% refers to current file name
 
-" define command Cmd( syntax -----    :Cmd <CMD> )
-command! -nargs=+ -complete=dir Cmd execute ':silent !echo $USER"@Enigma:~"${PWD:11}"$ "'.<q-args> |execute ':silent !'.<q-args>  | execute ':silent !read -n 1'  |  execute ':redraw!'
-"  execute ':silent !clear' | | execute ':silent !echo \n
-
-" define command Gcc( syntax -----    :Gcc <EXEC> )
-command! -nargs=+ -complete=dir Gcc Cmd gcc % -o <q-args>
-
-" define command Make( syntax ------  :Make <FILENAME> )
-command! -nargs=+ -complete=dir Make Cmd make -f <q-args>
-
 "tex live spell check
 command -nargs=0 Spell setlocal spell spelllang=en_gb
-
-
-" Run python script
-command -nargs=0 RunP Cmd python %
-
-" Run python3 script
-command -nargs=0 RunP3 Cmd python3 %
-
-" Run C script as a.out
-command -nargs=0 RunC Cmd gcc % && ./a.out
-
 
 " ================Startup Page =============
 
