@@ -85,6 +85,25 @@ snippet Assignment
 
     \end{document}
 
+snippet inline_code
+    \usepackage{xcolor}
+    \usepackage{listings}
+    \definecolor{mygray}{rgb}{0.8,0.8,0.8}
+    \lstset{%
+    basicstyle=\ttfamily,
+    breaklines = true,
+    backgroundcolor=\color{mygray},
+    }
+    \usepackage{realboxes}
+    \begin{document}
+
+    % demo using \lstinline only
+    This is \lstinline|my code|
+
+    % demo using \lstinline and \Colorbox
+    This is \Colorbox{mygray}{\lstinline|my code|}
+
+
 snippet code_settings
 
     \lstset{basicstyle=\ttfamily,

@@ -1,3 +1,20 @@
+snippet     title
+options     word
+    ---
+    title: ${1:Title}
+    author: Rahul
+    date: ${2:date}
+    subject: ${3:Subject}
+    titlepage: ${4:boolean}
+    ...
+
+
+snippet     code
+options     head
+    ```${1:code}
+        ${0:}
+    ```
+
 snippet link
 abbr [link][]
 options word
@@ -68,10 +85,6 @@ abbr __strong__
 options word
     __${1}__${2}
 
-snippet code
-abbr `code`
-options word
-    \`${1}\`${2}
 
 snippet codeblock
 abbr code block
