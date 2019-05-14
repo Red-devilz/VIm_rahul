@@ -98,6 +98,9 @@ Plug 'matze/vim-tex-fold'
 " Lua syntax
 " Plug 'tbastos/vim-lua'
 
+" Bro syntax
+" Plug 'https://github.com/mephux/bro.vim.git'
+
 " XML-editor
 " Plug 'sukima/xmledit'
 " Plug 'actionshrimp/vim-xpath'
@@ -118,7 +121,7 @@ Plug 'mhinz/vim-startify'
 Plug 'rhysd/vim-grammarous'
 
 
-"SCreenshot
+"Screenshot
 Plug 'kristijanhusak/vim-carbon-now-sh'
 
 " Vim Devicons
@@ -699,7 +702,9 @@ command -nargs=0 Spell setlocal spell spelllang=en_gb
 let g:startify_bookmarks = [ {'vim': '~/.config/nvim/init.vim'}, {'zsh' : '~/.zshrc'} ]
 let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 1
+"
 " ============== Grammarous ===============
+
 let g:grammarous#hooks = {}
 function! g:grammarous#hooks.on_check(errs) abort
     nmap <buffer><C-n> <Plug>(grammarous-move-to-next-error)
