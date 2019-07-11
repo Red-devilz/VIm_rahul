@@ -27,7 +27,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " Neocomplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neoinclude.vim'
 
 " Snippets
@@ -247,12 +247,12 @@ let g:jedi#use_splits_not_buffers = "left"
 
 " ========== Latex ==================
 let maplocalleader = ","
-let g:tex_flavor='tex'
+let g:tex_flavor='latex'
 
 nnoremap <leader>xl :!xelatex %
 
 " let g:vimtex_fold_enabled = 0
-let g:vimtex_syntax_enabled = 0
+let g:vimtex_syntax_enabled = 1
 
 let g:vimtex_compiler_latexmk = {
 \ 'backend' : 'process',
