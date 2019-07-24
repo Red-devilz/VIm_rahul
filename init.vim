@@ -12,57 +12,61 @@ call plug#begin('~/.config/nvim/plugged')
 
 " let Vundle manage Vundle, required
 
-" Python AutoCompletion
-Plug 'zchee/deoplete-jedi'
-
-"Automatic syntax checking
-" Plug 'vim-syntastic/syntastic'
-Plug 'w0rp/ale'
-
-" Run quickrun to run the code
-" Plug 'thinca/vim-quickrun'
-
-" plugin for Git, line changes
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-
-" Neocomplete
-Plug 'Shougo/deoplete.nvim'
+" ### Autocomplete ###
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neoinclude.vim'
 
 " Snippets
 Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/neosnippet-snippets', {'frozen': 1}
+
+"Automatic syntax checking
+Plug 'w0rp/ale'
+
+" ### File Manipulation ###
+" plugin for Git, line changes
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " File manager
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-" Nerd_commenteer
-Plug 'scrooloose/nerdcommenter'
+" Vim Devicons
+Plug 'ryanoasis/vim-devicons'
 
+"Fuzzy file finding
+Plug 'ctrlpvim/ctrlp.vim'
+
+" ## Tools. ###
 " Tmux Syntax, Navigation
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
 
-" PowerLine
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Nerd_commenter
+Plug 'scrooloose/nerdcommenter'
+
+"Grammar
+Plug 'rhysd/vim-grammarous'
 
 " Ctags
 Plug 'majutsushi/tagbar'
 
-"Vim-wiki
-Plug 'vimwiki/vimwiki'
-
-"Python Code Folding
-Plug 'tmhedberg/SimpylFold'
-
 "Code folding
 Plug 'Konfekt/FastFold'
 
-" Beuatify Code - python
+"Vim-wiki
+Plug 'vimwiki/vimwiki'
+
+" ### Language Specific Plugins ####
+" Python 
+Plug 'tmhedberg/SimpylFold'
 Plug 'tell-k/vim-autopep8'
+Plug 'davidhalter/jedi-vim'
+Plug 'deoplete-plugins/deoplete-jedi'
+
+" Cpp/C
+Plug 'Shougo/deoplete-clangx'
 
 "Java Completion
 " Plug 'artur-shaik/vim-javacomplete2'
@@ -91,9 +95,8 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 " Plug 'adimit/prolog.vim'
 
 "Latex
-Plug 'lervag/vimtex'
+Plug 'lervag/vimtex', {'frozen': 1}
 Plug 'matze/vim-tex-fold'
-" Plug 'gi1242/vim-tex-syntax'
 
 " Lua syntax
 " Plug 'tbastos/vim-lua'
@@ -106,26 +109,19 @@ Plug 'matze/vim-tex-fold'
 " Plug 'actionshrimp/vim-xpath'
 " Plug 'vim-scripts/XML-Folding'
 
-"Fuzzy file finding
-Plug 'ctrlpvim/ctrlp.vim'
+" ### Themes ###
 
 " Gruvbox
 Plug 'morhetz/gruvbox'
 Plug 'jnurmine/Zenburn'
 Plug 'flazz/vim-colorschemes'
 
+" PowerLine
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 " Startup
 Plug 'mhinz/vim-startify'
-
-"Grmmar
-Plug 'rhysd/vim-grammarous'
-
-
-"Screenshot
-Plug 'kristijanhusak/vim-carbon-now-sh'
-
-" Vim Devicons
-Plug 'ryanoasis/vim-devicons'
 
 " all of your plugins must be added before the following line
 call plug#end()
@@ -145,51 +141,44 @@ set omnifunc=syntaxcomplete#Complete
 "
 " see :h vundle for more details or wiki for faq
 
-
-"=======SimplyFold : Python ===========
-
-let g:SimpylFold_docstring_preview = 1
-
-"===============Variable replace===============
-" For local replace
-"gd(select work) + V(Visual) + G(file-end) + ::S/paste(gd)///gc(keep cursor to left thrice
-" nnoremap gr gdVG::s/<C-R>///gc<left><left><left>
-
-" For global replace
-" nnoremap gR gdggVG::s/<C-R>///gc<left><left><left>
-
-
-" ================ Markdown ======================
-let g:instant_markdown_autostart = 0
-let g:instant_markdown_slow = 1
-
-" ================  Clang ======================
-" path to directory where library can be found
-let g:clang_library_path='/usr/lib/llvm-3.8/lib'
-let g:clang_complete_auto = 1
-let g:clang_complete_copen = 1
-" Disable Preview
-set completeopt-=preview
-
-" ============== Neocomplete =================
+" ============== Deocomplete =================
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 " Use smartcase.
 let g:deoplete#enable_smart_case = 1
 
-let g:deoplete#sources#jedi#python_path = '/usr/bin/python3'
+let g:deoplete#max_list = 8
 
-call deoplete#custom#source('jedi', 'debug_enabled', 1)
+let g:deoplete#sources#jedi#python_path = '/usr/bin/python3'
+let g:deoplete#sources#jedi#show_docstring = 1
+
+call deoplete#custom#source('jedi', 'debug_enabled', 0)
 "
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
+" ============ Jedi ========================
 
+" Dont open box when autocompletion occurs
+autocmd FileType python set completeopt=menuone,longest
+autocmd FileType python setlocal complete-=i
+autocmd FileType python setlocal omnifunc=jedi#completions
+
+let g:jedi#auto_vim_configuration = 0
+
+" Disable autocompletions
+let g:jedi#completions_enabled = 0
+let g:jedi#popup_on_dot = 0
+let g:pymode_rope = 0
+
+" So that vim splits are'nt affected
+let g:jedi#use_splits_not_buffers = "left"
+"
 "===============Snippets===============
 
 let g:neosnippet#snippets_directory = '/home/rahul/.config/nvim/plugged/neosnippet-snippets/neosnippets'
@@ -208,42 +197,34 @@ imap <expr><TAB>
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
+"=========Ale settings================
 
-" ===========Relative line nuber===========
+let g:ale_close_preview_on_insert = 1
+let g:airline#extensions#ale#enabled = 1
 
-" Toggle relative line numbering using Ctrl-l
-function! NumberToggle()
-	if(&relativenumber == 1)
-		set norelativenumber
-	else
-		set relativenumber
-	endif
-endfunc
+" Check Python files with flake8 and pylint.
+let b:ale_linters = ['flake8']
+" Fix Python files with autopep8 and yapf.
+let b:ale_fixers = ['autopep8', 'yapf']
 
-nnoremap <C-l> :call NumberToggle()<cr>
+" Write this in your vimrc file
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_fix_on = 'never'
+"
+"======= SimplyFold : Python ===========
+let g:SimpylFold_docstring_preview = 1
 
+" ======= Markdown =================
+let g:instant_markdown_autostart = 0
+let g:instant_markdown_slow = 1
 
-"===============Jedi Settings===============
+" ============ Clang ================
+" Change clang binary path
+call deoplete#custom#var('clangx', 'clang_binary', '/usr/local/bin/clang')
 
-let g:jedi#force_py_version=3
-
-" Dont open box when autocompletion occurs
-autocmd FileType python setlocal completeopt-=preview
-autocmd FileType python setlocal complete-=i
-autocmd FileType python setlocal omnifunc=jedi#completions
-
-let g:jedi#auto_vim_configuration = 0
-
-" Disable autocompletions
-let g:jedi#completions_enabled = 0
-let g:jedi#popup_on_dot = 0
-
-" Always select first popup
-let g:jedi#popup_select_first = 0
-
-" So that vim splits are'nt affected
-let g:jedi#use_splits_not_buffers = "left"
-
+" Change clang options
+call deoplete#custom#var('clangx', 'default_c_options', '')
+call deoplete#custom#var('clangx', 'default_cpp_options', '')
 
 " ========== Latex ==================
 let maplocalleader = ","
@@ -273,18 +254,20 @@ let g:vimtex_compiler_latexmk = {
 
 let g:tex_no_error = 1
 
-let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize']
+let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract']
 
-" let g:vimtex_compiler_method='latexrun'
+" ===========Relative line nuber===========
 
-" set grepprg=grep\ -nH\ $*
-" set iskeyword+=:
-" let g:Imap_UsePlaceHolders = 0
+" Toggle relative line numbering using Ctrl-l
+function! NumberToggle()
+	if(&relativenumber == 1)
+		set norelativenumber
+	else
+		set relativenumber
+	endif
+endfunc
 
-
-" let g:Tex_CompileRule_pdf = 'pdflatex --interaction=nonstopmode $*'
-" let g:Tex_CompileRule_dvi = 'pdflatex --interaction=nonstopmode $*'
-" le g:Tex_IgnoredWarnings = 1
+nnoremap <C-l> :call NumberToggle()<cr>
 
 "=========Status Line================
 
@@ -295,20 +278,6 @@ let g:airline_theme='murmur'
 let g:airline_detect_modified=1
 let g:airline#extensions#whitespace#enabled = 0
 
-
-"=========Ale settings================
-
-let g:ale_close_preview_on_insert = 1
-let g:airline#extensions#ale#enabled = 1
-
-" Check Python files with flake8 and pylint.
-let b:ale_linters = ['flake8']
-" Fix Python files with autopep8 and yapf.
-let b:ale_fixers = ['autopep8', 'yapf']
-
-" Write this in your vimrc file
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_fix_on = 'never'
 
 "=========General Vim settings================
 
@@ -375,7 +344,7 @@ augroup END
 let vimDir = '$HOME/.vim'
 let &runtimepath.=','.vimDir
 
-"======== Keep undo history across sessions by storing it in a file==========
+"======== Keep undo history across sessions ==========
 
 if has('persistent_undo')
 	let myUndoDir = expand(vimDir . '/undodir')
@@ -386,25 +355,12 @@ if has('persistent_undo')
 	set undofile
 endif
 
-"==============commenting blocks of code======================
+"========= Comments =========
 
 " Using NerdCommenter instead
 let NERDSpaceDelims=1
 
-" augroup configgroup
-"	autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
-"	autocmd FileType sh,ruby,python   let b:comment_leader = '# '
-"	autocmd FileType conf,fstab       let b:comment_leader = '# '
-"	autocmd FileType tex              let b:comment_leader = '% '
-"	autocmd FileType mail             let b:comment_leader = '> '
-"	autocmd FileType vim              let b:comment_leader = '" '
-"	autocmd FileType octave              let b:comment_leader = '% '
-"	autocmd FileType nasm              let b:comment_leader = '; '
-"	noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-"	noremap <silent> ,uc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
-" augroup END
-
-"============== Code folding=========
+"=========== Code folding=========
 
 set foldmethod=syntax
 set foldnestmax=4
@@ -590,6 +546,8 @@ noremap <leader>a  ggVG
 " nnoremap <C-E> <C-V>
 
 "remap the copy, paste to Ctr-shift-C and Ctrl-shift-V
+noremap <C-b> <C-v>
+
 vnoremap <C-c> "+y
 noremap <C-v>  <F10>"+p<F10> 
 " Indent entire file
@@ -604,6 +562,9 @@ nnoremap <leader>h :nohls<CR>
 
 " TagBar
 nmap <leader>t :TagbarToggle<CR>
+
+"
+noremap <C-f> *:%s///g<left><left>
 
 "Ctags newtab and vsplit
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -683,26 +644,16 @@ let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr, pre, script'
 if has('mouse')
 	set mouse=a
 endif
-
-" ===========USER DEFINED COMMANDS =============
-
-" define command Cmd(user command must begin with CAPS)
-"  :Cmd <CMD> ---- --- executes shell command
-" Clear screen
-" Execute the command
-" then wait for key-stroke(read any character)
-" redraw screen, go back to VIM
-" @% refers to current file name
-
-"tex live spell check
-command -nargs=0 Spell setlocal spell spelllang=en_gb
-
+"
 " ================Startup Page =============
 
 let g:startify_bookmarks = [ {'vim': '~/.config/nvim/init.vim'}, {'zsh' : '~/.zshrc'} ]
 let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 1
-"
+
+" ===========USER DEFINED COMMANDS =============
+command -nargs=0 Spell setlocal spell spelllang=en_gb
+
 " ============== Grammarous ===============
 
 let g:grammarous#hooks = {}
@@ -723,7 +674,6 @@ endfunction
 
 " ============== Tabs ====================
 
-
 "Tabstop is number of spaces the tab counts for
 "set tabstop=8
 "Soft tabstop is number of spaces counts for when editing
@@ -736,17 +686,17 @@ set softtabstop=0 noexpandtab
 set shiftwidth=4
 
 
-
 " =========== Set of Mappings =======
 
 " == normal ==
 " <C>-n - Nerd Tree
-" <C>-l - relative line toggle
 " <C>-p -  File search 
 " <C>-U, <C>-D scroll
+" <C>-b - Vertical visual select
 " <C>-\ - ctags open in newtab
 " gt - change tab
 " gq - word wrap
+" <C>-l - relative line toggle
 " ,c<space> - comment
 " ,ll - latex auto compile
 " ,s - syntastic active passive
@@ -754,7 +704,6 @@ set shiftwidth=4
 " ,i - Aut indent(or Autopep8)
 " ,h - Remove highlight
 " ,t - Tagbar
-" ,tw - tree width toggle
 " <space> - code fold
 " <alt>  kjlh(switch windows)
 
