@@ -62,8 +62,8 @@ Plug 'vimwiki/vimwiki'
 " Python 
 Plug 'tmhedberg/SimpylFold'
 Plug 'tell-k/vim-autopep8'
+" Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'davidhalter/jedi-vim'
-Plug 'deoplete-plugins/deoplete-jedi'
 
 " Cpp/C
 Plug 'Shougo/deoplete-clangx'
@@ -254,7 +254,7 @@ let g:vimtex_compiler_latexmk = {
 
 let g:tex_no_error = 1
 
-let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract']
+let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract', 'question', 'solution', 'question']
 
 " ===========Relative line nuber===========
 
@@ -564,7 +564,7 @@ nnoremap <leader>h :nohls<CR>
 nmap <leader>t :TagbarToggle<CR>
 
 "
-noremap <C-f> *:%s///g<left><left>
+noremap <C-f> *:%s///g<left><left><left>
 
 "Ctags newtab and vsplit
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -597,7 +597,7 @@ inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
 inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
 
 " Text width
-set tw=80
+set tw=70
 function! WidthToggle()
 	let l:menu_option = strridx(&fo, "t")
 	if( l:menu_option > 0)
@@ -652,7 +652,8 @@ let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 1
 
 " ===========USER DEFINED COMMANDS =============
-command -nargs=0 Spell setlocal spell spelllang=en_gb
+command -nargs=0 Spell setlocal spell spelllang=en_us
+hi SpellBad cterm=underline
 
 " ============== Grammarous ===============
 
