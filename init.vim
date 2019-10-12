@@ -1,4 +1,4 @@
-" =================Vundle settings=================
+" ==== Vundle settings {{{
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -13,7 +13,7 @@ call plug#begin('~/.config/nvim/plugged')
 " let Vundle manage Vundle, required
 
 " ### Autocomplete ###
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
 Plug 'Shougo/neoinclude.vim'
 
 " Snippets
@@ -52,15 +52,17 @@ Plug 'rhysd/vim-grammarous'
 " Ctags
 Plug 'majutsushi/tagbar'
 
-"Code folding
-Plug 'Konfekt/FastFold'
 
 "Vim-wiki
 Plug 'vimwiki/vimwiki'
 
+" Slime
+Plug 'jpalardy/vim-slime'
+
 " ### Language Specific Plugins ####
 " Python 
-Plug 'tmhedberg/SimpylFold'
+Plug 'rahul13ramesh/SimpylFold'
+Plug 'Konfekt/FastFold'
 Plug 'tell-k/vim-autopep8'
 " Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'davidhalter/jedi-vim'
@@ -130,18 +132,9 @@ filetype plugin indent on    " required
 syntax enable
 " to ignore plugin indent changes, instead use:
 
-" Omni Completion ============
-
+"}}}
+" ==== Deocomplete {{{
 set omnifunc=syntaxcomplete#Complete
-
-" brief help
-" :pluginlist       - lists configured plugins
-" :plugininstall    - installs plugins; append `!` to update or just :pluginupdate
-" :pluginclean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for faq
-
-" ============== Deocomplete =================
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
@@ -160,9 +153,9 @@ autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-
-" ============ Jedi ========================
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete 
+" }}}
+" ==== Jedi {{{
 
 " Dont open box when autocompletion occurs
 autocmd FileType python set completeopt=menuone,longest
@@ -177,9 +170,9 @@ let g:jedi#popup_on_dot = 0
 let g:pymode_rope = 0
 
 " So that vim splits are'nt affected
-let g:jedi#use_splits_not_buffers = "left"
-"
-"===============Snippets===============
+let g:jedi#use_splits_not_buffers = "left" 
+" }}}
+" ==== Snippets {{{
 
 let g:neosnippet#snippets_directory = '/home/rahul/.config/nvim/plugged/neosnippet-snippets/neosnippets'
 
@@ -196,9 +189,8 @@ imap <expr><TAB>
 
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-"=========Ale settings================
-
+" }}}
+" ==== Ale settings {{{
 let g:ale_close_preview_on_insert = 1
 let g:airline#extensions#ale#enabled = 1
 
@@ -206,27 +198,31 @@ let g:airline#extensions#ale#enabled = 1
 let b:ale_linters = ['flake8']
 " Fix Python files with autopep8 and yapf.
 let b:ale_fixers = ['autopep8', 'yapf']
+let g:ale_warn_about_trailing_blank_lines=0
 
 " Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_fix_on = 'never'
-"
-"======= SimplyFold : Python ===========
-let g:SimpylFold_docstring_preview = 1
 
-" ======= Markdown =================
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '•'
+" }}}
+" ==== SimplyFold : Python {{{
+let g:SimpylFold_docstring_preview = 1
+" }}}
+" ==== Markdown {{{
 let g:instant_markdown_autostart = 0
 let g:instant_markdown_slow = 1
-
-" ============ Clang ================
+"}}}
+" ==== Clang {{{
 " Change clang binary path
 call deoplete#custom#var('clangx', 'clang_binary', '/usr/local/bin/clang')
 
 " Change clang options
 call deoplete#custom#var('clangx', 'default_c_options', '')
 call deoplete#custom#var('clangx', 'default_cpp_options', '')
-
-" ========== Latex ==================
+" }}}
+" ==== Latex {{{
 let maplocalleader = ","
 let g:tex_flavor='latex'
 
@@ -251,12 +247,11 @@ let g:vimtex_compiler_latexmk = {
 \ ],
 \}
 
-
 let g:tex_no_error = 1
-
 let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract', 'question', 'solution', 'question']
 
-" ===========Relative line nuber===========
+"}}}
+" ==== Relative line nuber {{{
 
 " Toggle relative line numbering using Ctrl-l
 function! NumberToggle()
@@ -268,8 +263,8 @@ function! NumberToggle()
 endfunc
 
 nnoremap <C-l> :call NumberToggle()<cr>
-
-"=========Status Line================
+"}}}
+" ==== Status Line {{{
 
 set laststatus=2
 let g:airline_powerline_fonts = 1
@@ -277,17 +272,25 @@ let g:airline_theme='murmur'
 
 let g:airline_detect_modified=1
 let g:airline#extensions#whitespace#enabled = 0
+" }}}
+" ==== General Vim settings {{{
 
+" Turn on the WiLd menu
+set wildmenu
 
-"=========General Vim settings================
-
-"syntax highlightinig
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
 
 " search as characters are entered
 set incsearch
 
 " highlight matches
 set hlsearch
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+	set mouse=a
+endif
 
 " Change Leader
 let mapleader=","
@@ -304,7 +307,11 @@ hi normal guibg=NONE ctermbg=NONE
 " highlight Normal ctermbg=1500
 " highlight Folded ctermfg=5638
 highlight Search ctermfg=9 ctermbg=8
-
+highlight GitGutterAdd    ctermbg=NONE ctermfg=2
+highlight GitGutterChange ctermbg=NONE ctermfg=3
+highlight GitGutterDelete ctermbg=NONE ctermfg=1
+highlight ALEErrorSign ctermfg=9 ctermbg=NONE
+highlight ALEWarningSign ctermfg=11 ctermbg=NONE
 
 if has('gui_running')
 	set guioptions-=T
@@ -331,8 +338,8 @@ set cmdheight=2
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
-
-" ====== Detect Files ===============
+" }}}
+" ==== Detect Files {{{
 
 augroup filetypedetect
 	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
@@ -343,8 +350,8 @@ augroup END
 " Put plugins and dictionaries in this dir (also on Windows)
 let vimDir = '$HOME/.vim'
 let &runtimepath.=','.vimDir
-
-"======== Keep undo history across sessions ==========
+" }}}
+" ==== Keep undo history across sessions {{{
 
 if has('persistent_undo')
 	let myUndoDir = expand(vimDir . '/undodir')
@@ -354,18 +361,18 @@ if has('persistent_undo')
 	let &undodir = myUndoDir
 	set undofile
 endif
-
-"========= Comments =========
+"}}}
+" ==== Comments {{{
 
 " Using NerdCommenter instead
 let NERDSpaceDelims=1
-
-"=========== Code folding=========
+"}}}
+" ==== Code folding {{{
 
 set foldmethod=syntax
 set foldnestmax=4
 set foldlevel=0
-set foldlevelstart=1
+set foldlevelstart=0
 set foldminlines=0
 
 let r_syntax_folding = 1
@@ -376,34 +383,37 @@ let g:vimsyn_folding ='aflmpPrt'
 nnoremap <space> za
 vnoremap <space> zf
 
-" Ensure cold foldings are saved
-" autocmd BufWinLeave *.* mkview
-" autocmd BufWinEnter *.* silent loadview
+let s:middot='·'
+let s:raquo='»'
+let s:small_l='ℓ'
 
+function! Foldtxt()
+  let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+  let lines_count = v:foldend - v:foldstart + 1
+  let lines_count_text = '[' . printf("%4s", lines_count . s:small_l) . ']'
+  let foldchar = matchstr(s:middot, 'fold:\zs.')
+  let foldtextstart = strpart(s:raquo . repeat(" ", v:foldlevel*2) . line, 0, (60*2)/3)
+  let foldtextend = lines_count_text . repeat(" ", 8)
+  let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
+  return foldtextstart . repeat(s:middot, 60-foldtextlength) . foldtextend . repeat(" ", 1000)
+endfunction
+set foldtext=Foldtxt()
+" hi Folded ctermfg=NONE
+hi Folded ctermbg=NONE
+
+autocmd FileType wiki :set foldmethod=marker
+autocmd FileType vim :set foldmethod=marker
 autocmd BufWinLeave .* mkview
-autocmd BufWinEnter .* silent! loadview
-
-autocmd BufWinLeave *.md mkview
-autocmd BufWinEnter *.md silent! loadview
-
-autocmd BufWinLeave *.txt mkview
-autocmd BufWinEnter *.txt silent! loadview
-
-autocmd BufWinLeave *.html mkview
-autocmd BufWinEnter *.html silent! loadview
 
 autocmd BufWinLeave *.tex mkview
 autocmd BufWinEnter *.tex silent! loadview
 autocmd BufRead,BufNewFile *.tex set filetype=tex
 
-autocmd BufWinLeave .vimrc mkview
-autocmd BufWinEnter .vimrc silent! loadview
-
 autocmd FileType help wincmd L
 autocmd BufWinEnter *.{wiki,md,mkd,mkdn,mdown,mark*} silent setf markdown
 
-" ======= Tmux settings========
-
+" }}}
+" ==== Tmux settings {{{
 if exists('$TMUX')
 	function! TmuxOrSplitSwitch(wincmd, tmuxdir)
 		let previous_winnr = winnr()
@@ -441,16 +451,19 @@ endif
 set timeout ttimeoutlen=50
 
 let g:tmux_navigator_no_mappings = 1
+let g:slime_target = "tmux"
+let g:slime_python_ipython = 1
 
-" ======= Split management ========
+"}}}
+" ==== Split management {{{
 
 " resize vertical splits with Ctrl-w + l / Ctrl-w + h
 nnoremap <c-w>l 5<C-w>>
 nnoremap <c-w>h 5<C-w><
 nnoremap <c-w>j 5<C-w>+
 nnoremap <c-w>k 5<C-w>-
-
-" ======= Nerd Tree settings ========
+"}}}
+" ==== Nerd Tree settings {{{
 
 " Always open Nerd Tree, Additionally, Start cursor in current window
 " autocmd VimEnter * NERDTree
@@ -476,6 +489,7 @@ function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
  exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 
+let g:gitgutter_override_sign_column_highlight = 1
 
 call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
@@ -505,9 +519,8 @@ call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
 
 call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
 call NERDTreeHighlightFile('sh', 'Cyan', 'none', '#686868', '#151515')
-
-
-" ================= CtrlP ==================
+"}}}
+" ==== CtrlP {{{
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -521,17 +534,16 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
-
-
-"================change backup dirctory to tmp===========
+"}}}
+" ==== Change backup dirctory to tmp {{{
 
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
-
-"=========Mappings in VIM  ===================
+"}}}
+" ==== Mappings in VIM  {{{
 
 "Map Esc key to jk
 inoremap jk <Esc>
@@ -571,7 +583,11 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 set tags=./tags;/
 
-" ==================Scrolling ===================
+command -nargs=0 Spell setlocal spell spelllang=en_us
+hi SpellBad cterm=underline
+
+"}}}
+" ==== Scrolling {{{
 
 "smooth scrolling using Ctrl-D and Ctrl-U(note: if scrolling gets stuck in the middle then simply press Enter and continue)
 function SmoothScroll(up)
@@ -597,7 +613,7 @@ inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
 inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
 
 " Text width
-set tw=70
+set tw=75
 function! WidthToggle()
 	let l:menu_option = strridx(&fo, "t")
 	if( l:menu_option > 0)
@@ -611,15 +627,8 @@ nnoremap <leader>tw :call WidthToggle()<cr>
 
 " Text center of screen
 set so=5
-
-"============= Menu ====================
-" Turn on the WiLd menu
-set wildmenu
-
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-
-"================== Vim Wiki=======================
+"}}}
+" ==== Vim Wiki {{{
 
 let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 			\ 'syntax': 'markdown', 
@@ -628,34 +637,15 @@ let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 au FileType vimwiki set syntax=pandoc
 au FileType md set syntax=pandoc
 
-" let wiki = {}
-" let wiki.path = '$HOME/Documents/vim/wiki'
-" let wiki.nested_syntaxes = {'python': 'python', 'cpp': 'cpp'}
-
-" let wiki.template_path =  '$HOME/Documents/vim/wiki/templates'
-" let wiki.template_default = 'def_template'
-" let wiki.template_ext= '.html'
 let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr, pre, script'
-
-
-
-" ================= Mouse =========================
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-	set mouse=a
-endif
-"
-" ================Startup Page =============
+"}}}
+" ==== Startup Page {{{
 
 let g:startify_bookmarks = [ {'vim': '~/.config/nvim/init.vim'}, {'zsh' : '~/.zshrc'} ]
 let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 1
-
-" ===========USER DEFINED COMMANDS =============
-command -nargs=0 Spell setlocal spell spelllang=en_us
-hi SpellBad cterm=underline
-
-" ============== Grammarous ===============
+"}}}
+" ==== Grammarous {{{
 
 let g:grammarous#hooks = {}
 function! g:grammarous#hooks.on_check(errs) abort
@@ -671,9 +661,8 @@ function! g:grammarous#hooks.on_reset(errs) abort
     nunmap <buffer><C-f>
     nunmap <buffer><C-e>
 endfunction
-
-
-" ============== Tabs ====================
+"}}}
+" ==== Tabs {{{
 
 "Tabstop is number of spaces the tab counts for
 "set tabstop=8
@@ -685,9 +674,8 @@ set noexpandtab
 set tabstop=4
 set softtabstop=0 noexpandtab
 set shiftwidth=4
-
-
-" =========== Set of Mappings =======
+"}}}
+" ==== Set of Mappings {{{
 
 " == normal ==
 " <C>-n - Nerd Tree
@@ -712,13 +700,11 @@ set shiftwidth=4
 " C-n - Auto-complete
 " C-K - complete trigger
 " jk - Esc
-" 
 
 " === Some useful ===
 " GrammarousCheck
 " INstantMarkdownPreview
 " Vimwiki2HTML
 " Gdiff
-
-
+" }}}
 
