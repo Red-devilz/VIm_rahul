@@ -57,7 +57,7 @@ Plug 'majutsushi/tagbar'
 Plug 'vimwiki/vimwiki'
 
 " Slime
-Plug 'jpalardy/vim-slime'
+" Plug 'jpalardy/vim-slime'
 
 " ### Language Specific Plugins ####
 " Python 
@@ -98,7 +98,7 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 "Latex
 Plug 'lervag/vimtex', {'frozen': 1}
-Plug 'matze/vim-tex-fold'
+Plug 'rahul13ramesh/vim-tex-fold'
 
 " Lua syntax
 " Plug 'tbastos/vim-lua'
@@ -296,33 +296,39 @@ endif
 let mapleader=","
 
 " color scheme of code
-colorscheme gruvbox
+let colorschemeval=1
+
+if (colorschemeval > 0)
+	colorscheme zenburn
+else
+	colorscheme gruvbox
+endif
 
 " set background colour
 set background=dark
-
 hi normal guibg=NONE ctermbg=NONE
 
-
-" highlight Normal ctermbg=1500
-" highlight Folded ctermfg=5638
-highlight Search ctermfg=9 ctermbg=8
-highlight GitGutterAdd    ctermbg=NONE ctermfg=2
-highlight GitGutterChange ctermbg=NONE ctermfg=3
-highlight GitGutterDelete ctermbg=NONE ctermfg=1
-highlight ALEErrorSign ctermfg=9 ctermbg=NONE
-highlight ALEWarningSign ctermfg=11 ctermbg=NONE
+if colorschemeval < 1
+	highlight Search ctermfg=9 ctermbg=8
+	highlight GitGutterAdd    ctermbg=NONE ctermfg=2
+	highlight GitGutterChange ctermbg=NONE ctermfg=3
+	highlight GitGutterDelete ctermbg=NONE ctermfg=1
+	highlight ALEErrorSign ctermfg=9 ctermbg=NONE
+	highlight ALEWarningSign ctermfg=11 ctermbg=NONE
+else
+	highlight Search ctermfg=225 ctermbg=6
+	highlight ALEErrorSign ctermfg=1 ctermbg=0
+	highlight ALEWarningSign ctermfg=3 ctermbg=0
+endif
 
 if has('gui_running')
 	set guioptions-=T
 	" no toolbar
 	" Ensure window is maximised when opened
 	set lines=1000 columns=999
-
 else
 	set t_Co=256
 endif
-
 
 " keep 50 lines of command line history
 set history=50
@@ -391,14 +397,12 @@ function! Foldtxt()
   let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
   let lines_count = v:foldend - v:foldstart + 1
   let lines_count_text = '[' . printf("%4s", lines_count . s:small_l) . ']'
-  let foldchar = matchstr(s:middot, 'fold:\zs.')
   let foldtextstart = strpart(s:raquo . repeat(" ", v:foldlevel*2) . line, 0, (60*2)/3)
   let foldtextend = lines_count_text . repeat(" ", 8)
   let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
   return foldtextstart . repeat(s:middot, 60-foldtextlength) . foldtextend . repeat(" ", 1000)
 endfunction
 set foldtext=Foldtxt()
-" hi Folded ctermfg=NONE
 hi Folded ctermbg=NONE
 
 autocmd FileType wiki :set foldmethod=marker
