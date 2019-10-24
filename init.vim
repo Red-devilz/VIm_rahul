@@ -1,4 +1,4 @@
-" ==== Vundle settings {{{
+" ==== Vim-plug settings {{{
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -6,8 +6,7 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 " set rtp+=~/.vim/bundle/Vundle.vim
 " call vundle#begin()
-call plug#begin('~/.config/nvim/plugged')
-" alternatively, pass a path where Vundle should install plugins
+call plug#begin('~/.config/nvim/plugged') " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
@@ -268,7 +267,8 @@ nnoremap <C-l> :call NumberToggle()<cr>
 
 set laststatus=2
 let g:airline_powerline_fonts = 1
-let g:airline_theme='murmur'
+let g:airline_theme='angr'
+" powerlineish, murmur, angr, base16_color
 
 let g:airline_detect_modified=1
 let g:airline#extensions#whitespace#enabled = 0
@@ -711,4 +711,3 @@ set shiftwidth=4
 " Vimwiki2HTML
 " Gdiff
 " }}}
-
