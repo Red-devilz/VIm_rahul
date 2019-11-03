@@ -91,6 +91,7 @@ Plug 'Shougo/deoplete-clangx'
 " Markdown
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+" Plug 'vim-pandoc/vim-pandoc'
 
 "Prolog
 " Plug 'adimit/prolog.vim'
@@ -319,6 +320,7 @@ else
 	highlight Search ctermfg=225 ctermbg=6
 	highlight ALEErrorSign ctermfg=1 ctermbg=0
 	highlight ALEWarningSign ctermfg=3 ctermbg=0
+	highlight Visual ctermbg=65
 endif
 
 if has('gui_running')
@@ -632,13 +634,18 @@ nnoremap <leader>tw :call WidthToggle()<cr>
 " Text center of screen
 set so=5
 "}}}
+" ==== Pandoc {{{
+let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
+" highlight LineNr  ctermbg=NONE
+highlight Conceal  ctermbg=NONE
+" }}}
 " ==== Vim Wiki {{{
 
 let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 			\ 'syntax': 'markdown', 
 			\ 'template_ext': '.html'}]
 
-au FileType vimwiki set syntax=pandoc
+au FileType vimwiki set syntax=markdown.pandoc
 au FileType md set syntax=pandoc
 
 let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr, pre, script'
