@@ -3,13 +3,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-" set rtp+=~/.vim/bundle/Vundle.vim
-" call vundle#begin()
-call plug#begin('~/.config/nvim/plugged') " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
+call plug#begin('~/.config/nvim/plugged') "
 
 " ### Autocomplete ###
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
@@ -35,7 +29,8 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 
 "Fuzzy file finding
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " ## Tools. ###
 " Tmux Syntax, Navigation
@@ -51,20 +46,17 @@ Plug 'rhysd/vim-grammarous'
 " Ctags
 Plug 'majutsushi/tagbar'
 
-
 "Vim-wiki
 Plug 'vimwiki/vimwiki'
-
-" Slime
-" Plug 'jpalardy/vim-slime'
 
 " ### Language Specific Plugins ####
 " Python 
 Plug 'rahul13ramesh/SimpylFold'
 Plug 'Konfekt/FastFold'
 Plug 'tell-k/vim-autopep8'
-" Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'davidhalter/jedi-vim'
+Plug 'mhinz/neovim-remote'
 
 " Cpp/C
 Plug 'Shougo/deoplete-clangx'
@@ -168,9 +160,8 @@ let g:jedi#auto_vim_configuration = 0
 " Disable autocompletions
 let g:jedi#completions_enabled = 0
 let g:jedi#popup_on_dot = 0
-let g:pymode_rope = 0
 
-" So that vim splits are'nt affected
+" So that vim splits aren't affected
 let g:jedi#use_splits_not_buffers = "left" 
 " }}}
 " ==== Snippets {{{
@@ -181,16 +172,7 @@ let g:neosnippet#snippets_directory = '/home/rahul/.config/nvim/plugged/neosnipp
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB>
-			\ pumvisible() ? "\<C-n>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-" }}}
+"}}}
 " ==== Ale settings {{{
 let g:ale_close_preview_on_insert = 1
 let g:airline#extensions#ale#enabled = 1
@@ -231,7 +213,6 @@ let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
 
-
 nnoremap <leader>xl :!xelatex %
 
 " let g:vimtex_fold_enabled = 0
@@ -253,22 +234,10 @@ let g:vimtex_compiler_latexmk = {
 \ ],
 \}
 
+let g:vimtex_compiler_progname = 'nvr'
 let g:tex_no_error = 1
 let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract', 'question', 'solution', 'question']
 
-"}}}
-" ==== Relative line nuber {{{
-
-" Toggle relative line numbering using Ctrl-l
-function! NumberToggle()
-	if(&relativenumber == 1)
-		set norelativenumber
-	else
-		set relativenumber
-	endif
-endfunc
-
-nnoremap <C-l> :call NumberToggle()<cr>
 "}}}
 " ==== Status Line {{{
 
@@ -461,10 +430,7 @@ endif
 " endw
 
 set timeout ttimeoutlen=50
-
 let g:tmux_navigator_no_mappings = 1
-let g:slime_target = "tmux"
-let g:slime_python_ipython = 1
 
 "}}}
 " ==== Split management {{{
@@ -532,20 +498,47 @@ call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
 call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
 call NERDTreeHighlightFile('sh', 'Cyan', 'none', '#686868', '#151515')
 "}}}
-" ==== CtrlP {{{
+" ==== FzF {{{
+"
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" In Neovim, you can set up fzf window using a Vim command
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+let g:fzf_layout = { 'window': '10new' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
 "}}}
 " ==== Change backup dirctory to tmp {{{
 
@@ -556,6 +549,16 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
 "}}}
 " ==== Mappings in VIM  {{{
+
+" Toggle relative line numbering using Ctrl-l
+function! NumberToggle()
+	if(&relativenumber == 1)
+		set norelativenumber
+	else
+		set relativenumber
+	endif
+endfunc
+nnoremap <C-l> :call NumberToggle()<cr>
 
 "Map Esc key to jk
 inoremap jk <Esc>
