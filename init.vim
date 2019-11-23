@@ -645,6 +645,7 @@ set so=5
 "}}}
 " ==== Pandoc {{{
 let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
+let g:pandoc#syntax#conceal#urls = 1
 " highlight LineNr  ctermbg=NONE
 highlight Conceal  ctermbg=NONE
 autocmd FileType markdown nmap <silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
@@ -658,6 +659,11 @@ let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 
 au FileType vimwiki set syntax=markdown.pandoc
 au FileType md set syntax=pandoc
+
+augroup wiki
+  au!
+  autocmd BufNewFile,BufRead *.wiki  set syntax=markdown.pandoc
+augroup END
 
 let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr, pre, script'
 "}}}

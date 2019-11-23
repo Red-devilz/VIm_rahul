@@ -1,5 +1,4 @@
-
-Neovim is based on async execution which results in a powerful text-editor
+Neovim is based on async execution which results in a snappy text-editor
 
 ## Setup
 
