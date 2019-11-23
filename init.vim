@@ -91,6 +91,7 @@ Plug 'Shougo/deoplete-clangx'
 " Markdown
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'ferrine/md-img-paste.vim'
 " Plug 'vim-pandoc/vim-pandoc'
 
 "Prolog
@@ -212,7 +213,8 @@ let g:SimpylFold_docstring_preview = 1
 " }}}
 " ==== Markdown {{{
 let g:instant_markdown_autostart = 0
-let g:instant_markdown_slow = 1
+let g:instant_markdown_slow = 0
+let g:instant_markdown_mathjax = 1
 "}}}
 " ==== Clang {{{
 " Change clang binary path
@@ -225,6 +227,10 @@ call deoplete#custom#var('clangx', 'default_cpp_options', '')
 " ==== Latex {{{
 let maplocalleader = ","
 let g:tex_flavor='latex'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
+
 
 nnoremap <leader>xl :!xelatex %
 
@@ -638,6 +644,8 @@ set so=5
 let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
 " highlight LineNr  ctermbg=NONE
 highlight Conceal  ctermbg=NONE
+autocmd FileType markdown nmap <silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+let g:mdip_imgdir = "/home/rahul/Documents/personal/wikiNotes/img"
 " }}}
 " ==== Vim Wiki {{{
 
