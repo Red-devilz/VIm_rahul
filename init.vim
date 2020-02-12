@@ -84,7 +84,8 @@ Plug 'Shougo/deoplete-clangx'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'ferrine/md-img-paste.vim'
-" Plug 'vim-pandoc/vim-pandoc'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'vim-pandoc/vim-pandoc'
 
 "Prolog
 " Plug 'adimit/prolog.vim'
@@ -92,6 +93,7 @@ Plug 'ferrine/md-img-paste.vim'
 "Latex
 Plug 'lervag/vimtex', {'frozen': 1}
 Plug 'rahul13ramesh/vim-tex-fold'
+Plug 'KeitaNakamura/tex-conceal.vim'
 
 " Lua syntax
 " Plug 'tbastos/vim-lua'
@@ -211,9 +213,7 @@ let maplocalleader = ","
 let g:tex_flavor='latex'
 let g:vimtex_quickfix_mode=0
 set conceallevel=1
-let g:tex_conceal='abdmg'
-
-nnoremap <leader>xl :!xelatex %
+let g:tex_conceal="abdgm"
 
 " let g:vimtex_fold_enabled = 0
 let g:vimtex_syntax_enabled = 1
@@ -253,6 +253,9 @@ let g:airline#extensions#whitespace#enabled = 0
 
 " Turn on the WiLd menu
 set wildmenu
+" set wildmode=longest,list:full
+let &wildcharm = &wildchar
+cnoremap <C-j> <DOWN>
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
@@ -274,24 +277,44 @@ let mapleader=","
 " color scheme of code
 let colorschemeval=1
 
-if (colorschemeval > 0)
-	colorscheme zenburn
-else
+if (colorschemeval == 0)
 	colorscheme gruvbox
 endif
+if (colorschemeval == 1)
+	colorscheme zenburn
+endif
+if (colorschemeval == 2)
+	colorscheme dracula
+endif
+
 
 " set background colour
 set background=dark
 hi normal guibg=NONE ctermbg=NONE
 
-if colorschemeval < 1
+if (colorschemeval == 0)
 	highlight Search ctermfg=9 ctermbg=8
 	highlight GitGutterAdd    ctermbg=NONE ctermfg=2
-	highlight GitGutterChange ctermbg=NONE ctermfg=3
 	highlight GitGutterDelete ctermbg=NONE ctermfg=1
+	highlight GitGutterChange ctermbg=NONE ctermfg=3
 	highlight ALEErrorSign ctermfg=9 ctermbg=NONE
 	highlight ALEWarningSign ctermfg=11 ctermbg=NONE
-else
+endif
+if (colorschemeval == 1)
+	highlight Pmenu ctermbg=NONE
+	" highlight LineNr ctermbg=NONE ctermfg=59
+	highlight LineNr ctermbg=NONE ctermfg=8
+	highlight Folded ctermbg=NONE ctermfg=8
+	highlight Search ctermfg=225 ctermbg=6
+	highlight Visual ctermbg=65
+	highlight ALEErrorSign ctermfg=1 ctermbg=NONE
+	highlight ALEWarningSign ctermfg=3 ctermbg=NONE
+	highlight GitGutterAdd    ctermbg=NONE ctermfg=2
+	highlight GitGutterDelete ctermbg=NONE ctermfg=1
+	highlight GitGutterChange ctermbg=NONE ctermfg=3
+endif
+if (colorschemeval == 2)
+	highlight Pmenu ctermbg=NONE
 	highlight Search ctermfg=225 ctermbg=6
 	highlight ALEErrorSign ctermfg=1 ctermbg=0
 	highlight ALEWarningSign ctermfg=3 ctermbg=0
@@ -326,6 +349,8 @@ set backspace=indent,eol,start
 
 augroup filetypedetect
 	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
+	au! BufRead,BufNewFile *.vimrc set syntax=vim
+	au! BufRead,BufNewFile *.zshrc set syntax=zsh
 	au! BufRead,BufNewFile *.s set filetype=nasm
 	au! BufRead,BufNewFile *.S set filetype=gas
 augroup END
@@ -382,7 +407,6 @@ endfunction
 set foldtext=Foldtxt()
 hi Folded ctermbg=NONE
 
-autocmd FileType wiki :set foldmethod=marker
 autocmd FileType vim :set foldmethod=marker
 autocmd BufWinLeave .* mkview
 
@@ -444,8 +468,6 @@ nnoremap <c-w>k 5<C-w>-
 " ==== Nerd Tree settings {{{
 
 " Always open Nerd Tree, Additionally, Start cursor in current window
-" autocmd VimEnter * NERDTree
-" autocmd VimEnter * wincmd p
 
 " Close NerdTree if only window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -468,6 +490,11 @@ function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
 endfunction
 
 let g:gitgutter_override_sign_column_highlight = 1
+let g:gitgutter_max_signs = 500  " default value
+let g:gitgutter_sign_added = '»'
+let g:gitgutter_sign_removed = '«'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_modified_removed = '~'
 
 call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
 call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
@@ -500,6 +527,8 @@ call NERDTreeHighlightFile('sh', 'Cyan', 'none', '#686868', '#151515')
 "}}}
 " ==== FzF {{{
 "
+nnoremap <C-f> :FZF<CR>
+
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
@@ -542,11 +571,11 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 "}}}
 " ==== Change backup dirctory to tmp {{{
 
-set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set writebackup
+set nobackup
+" set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" set backupskip=/tmp/*,/private/tmp/*
+" set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" set writebackup
 "}}}
 " ==== Mappings in VIM  {{{
 
@@ -590,8 +619,8 @@ nnoremap <leader>h :nohls<CR>
 " TagBar
 nmap <leader>t :TagbarToggle<CR>
 
-"
-noremap <C-f> *:%s///g<left><left><left>
+
+" noremap <C-f> *:%s///g<left><left><left>
 
 "Ctags newtab and vsplit
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -646,30 +675,44 @@ set so=5
 " ==== Pandoc {{{
 let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
 let g:pandoc#syntax#conceal#urls = 1
+let g:pandoc#folding#fold_yaml = 1
+let g:pandoc#folding#fold_fenced_codeblocks = 1
+let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
+let g:pandoc#filetypes#pandoc_markdown = 0
+let g:pandoc#folding#mode = ["syntax"]
+let g:pandoc#modules#enabled = ["formatting", "folding", "toc"]
+let g:pandoc#formatting#mode = "h"
+let g:pandoc#folding#use_foldtext = 0
+"
 " highlight LineNr  ctermbg=NONE
 highlight Conceal  ctermbg=NONE
 autocmd FileType markdown nmap <silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-let g:mdip_imgdir = "/home/rahul/Documents/personal/wikiNotes/img"
+let g:mdip_imgdir = "images"
 " }}}
 " ==== Vim Wiki {{{
 
+let g:vimwiki_global_ext= 0 
 let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 			\ 'syntax': 'markdown', 
 			\ 'template_ext': '.html'}]
+"
 
-au FileType vimwiki set syntax=markdown.pandoc
+let g:vimwiki_ext2syntax = {'.md': 'markdown'}
+let g:vimwiki_folding='expr'
+
+" au FileType vimwiki set filetype=vimwiki.markdown
 au FileType md set syntax=pandoc
+au FileType vimwiki set syntax=markdown.pandoc
+au FileType vimwiki set foldtext=Foldtxt()
+au BufNewFile,BufRead *.wiki  set syntax=markdown.pandoc
+au BufNewFile,BufRead vimwiki  set syntax=markdown.pandoc
 
-augroup wiki
-  au!
-  autocmd BufNewFile,BufRead *.wiki  set syntax=markdown.pandoc
-augroup END
 
 let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr, pre, script'
 "}}}
 " ==== Startup Page {{{
 
-let g:startify_bookmarks = [ {'vim': '~/.config/nvim/init.vim'}, {'zsh' : '~/.zshrc'} ]
+let g:startify_bookmarks = [ {'vim': '~/Documents/config/Vim__files/init.vim'}, {'zsh': '~/Documents/config/term_files/shell/dot.zshrc'}, {'tmux': '~/Documents/config/term_files/shell/dot.tmux.conf'} ]
 let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 1
 "}}}
