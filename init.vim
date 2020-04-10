@@ -8,49 +8,28 @@ call plug#begin('~/.config/nvim/plugged') "
 " ### Autocomplete ###
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
 Plug 'Shougo/neoinclude.vim'
-
-" Snippets
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets', {'frozen': 1}
 
-"Automatic syntax checking
-Plug 'w0rp/ale'
-
 " ### File Manipulation ###
-" plugin for Git, line changes
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-
-" File manager
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-
-" Vim Devicons
 Plug 'ryanoasis/vim-devicons'
-
-"Fuzzy file finding
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 
 " ## Tools. ###
 " Tmux Syntax, Navigation
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
-
-" Nerd_commenter
 Plug 'scrooloose/nerdcommenter'
-
-"Grammar
+Plug 'w0rp/ale'
 Plug 'rhysd/vim-grammarous'
-
-" Ctags
 Plug 'majutsushi/tagbar'
-
-"Vim-wiki
 Plug 'vimwiki/vimwiki'
 
 " ### Language Specific Plugins ####
-" Python 
 Plug 'rahul13ramesh/SimpylFold'
 Plug 'Konfekt/FastFold'
 Plug 'tell-k/vim-autopep8'
@@ -58,67 +37,39 @@ Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'davidhalter/jedi-vim'
 Plug 'mhinz/neovim-remote'
 
-" Cpp/C
-Plug 'Shougo/deoplete-clangx'
-
-"Java Completion
-" Plug 'artur-shaik/vim-javacomplete2'
-" Plug 'vim-scripts/javacomplete'
-
-" Javascript
-" Plug 'pangloss/vim-javascript'
-
-" Coffeescript
-" Plug 'kchmck/vim-coffee-script'
-
-"Vim-R Plug
-" Plug 'vim-scripts/Vim-R-plugin'
-
-" NASM syntax
-" Plug 'shirk/vim-gas'
-
-" SQL
-" Plug 'shmup/vim-sql-syntax'
-
-" Markdown
-Plug 'suan/vim-instant-markdown'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'ferrine/md-img-paste.vim'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'vim-pandoc/vim-pandoc'
-
-"Prolog
-" Plug 'adimit/prolog.vim'
-
-"Latex
 Plug 'lervag/vimtex', {'frozen': 1}
 Plug 'rahul13ramesh/vim-tex-fold'
 Plug 'KeitaNakamura/tex-conceal.vim'
 
-" Lua syntax
-" Plug 'tbastos/vim-lua'
+Plug 'suan/vim-instant-markdown'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'ferrine/md-img-paste.vim', {'frozen': 1}
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'vim-pandoc/vim-pandoc'
 
-" Bro syntax
-" Plug 'https://github.com/mephux/bro.vim.git'
-
-" XML-editor
-" Plug 'sukima/xmledit'
-" Plug 'actionshrimp/vim-xpath'
-" Plug 'vim-scripts/XML-Folding'
-
-" ### Themes ###
-
-" Gruvbox
+" ### Aesthetics ###
 Plug 'morhetz/gruvbox'
 Plug 'jnurmine/Zenburn'
 Plug 'flazz/vim-colorschemes'
-
-" PowerLine
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" Startup
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'mhinz/vim-startify'
+"
+" Plug 'Shougo/deoplete-clangx'
+" Plug 'artur-shaik/vim-javacomplete2'
+" Plug 'vim-scripts/javacomplete'
+" Plug 'pangloss/vim-javascript'
+" Plug 'kchmck/vim-coffee-script'
+" Plug 'vim-scripts/Vim-R-plugin'
+" Plug 'shirk/vim-gas'
+" Plug 'shmup/vim-sql-syntax'
+" Plug 'adimit/prolog.vim'
+" Plug 'tbastos/vim-lua'
+" Plug 'https://github.com/mephux/bro.vim.git'
+" Plug 'sukima/xmledit'
+" Plug 'actionshrimp/vim-xpath'
+" Plug 'vim-scripts/XML-Folding'
 
 " all of your plugins must be added before the following line
 call plug#end()
@@ -128,17 +79,15 @@ syntax enable
 " to ignore plugin indent changes, instead use:
 
 "}}}
-" ==== Deocomplete {{{
+" ==== Deoplete {{{
 set omnifunc=syntaxcomplete#Complete
 
-" Use deoplete.
 let g:deoplete#enable_at_startup = 1
-" Use smartcase.
 let g:deoplete#enable_smart_case = 1
-
+let g:deoplete#auto_complete_start_length = 2
 let g:deoplete#max_list = 8
 
-let g:deoplete#sources#jedi#python_path = '/usr/bin/python3'
+let g:deoplete#sources#jedi#python_path = '/home/rahul/Documents/software/anaconda3/envs/py36/bin/python3'
 let g:deoplete#sources#jedi#show_docstring = 1
 
 call deoplete#custom#source('jedi', 'debug_enabled', 0)
@@ -177,7 +126,6 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 "}}}
 " ==== Ale settings {{{
 let g:ale_close_preview_on_insert = 1
-let g:airline#extensions#ale#enabled = 1
 
 " Check Python files with flake8 and pylint.
 let b:ale_linters = ['flake8']
@@ -242,12 +190,11 @@ let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize
 " ==== Status Line {{{
 
 set laststatus=2
-let g:airline_powerline_fonts = 1
-let g:airline_theme='angr'
-" powerlineish, murmur, angr, base16_color
-
-let g:airline_detect_modified=1
-let g:airline#extensions#whitespace#enabled = 0
+set noshowmode
+let g:lightline = {
+      \ 'colorscheme': 'seoul256',
+      \ }
+"
 " }}}
 " ==== General Vim settings {{{
 
@@ -340,7 +287,7 @@ set ruler
 set number
 
 " Increase the height of the command line
-set cmdheight=2
+set cmdheight=1
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
