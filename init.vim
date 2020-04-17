@@ -579,8 +579,6 @@ set so=10
 
 inoremap jk <Esc>
 noremap <leader>a  ggVG
-nnoremap ; :
-nnoremap : ;
 
 " Remap vertical selection
 noremap <C-b> <C-v>
