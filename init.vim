@@ -18,6 +18,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 
 " ### Tools. ###
@@ -50,8 +51,9 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'jnurmine/Zenburn'
 Plug 'itchyny/lightline.vim'
 Plug 'mhinz/vim-startify'
+Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
 
-" Plug 'morhetz/gruvbox'
 " Plug 'flazz/vim-colorschemes'
 " Plug 'Shougo/deoplete-clangx'
 " Plug 'majutsushi/tagbar'
@@ -74,7 +76,6 @@ call plug#end()
 
 filetype plugin indent on
 syntax enable
-" to ignore plugin indent changes, instead use:
 
 "}}}
 " ==== Deoplete {{{
@@ -90,12 +91,16 @@ let g:deoplete#sources#jedi#show_docstring = 1
 call deoplete#custom#source('jedi', 'debug_enabled', 0)
  
 " Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete 
-" }}}
+augroup filecompletion
+    au! FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    au! FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    au! FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    au! FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+    au! FileType python setlocal omnifunc=jedi#completions
+    au! FileType python set completeopt=menuone,longest
+    au! FileType python setlocal complete-=i
+augroup END
+"}}}
 " ==== Snippets {{{
 let g:neosnippet#snippets_directory = '/home/rahul/.config/nvim/plugged/neosnippet-snippets/neosnippets'
 
@@ -106,14 +111,7 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 "}}}
 " ==== Jedi {{{
 
-" Dont open box when autocompletion occurs
-autocmd FileType python set completeopt=menuone,longest
-autocmd FileType python setlocal complete-=i
-autocmd FileType python setlocal omnifunc=jedi#completions
-
 let g:jedi#auto_vim_configuration = 0
-
-" Disable autocompletions
 let g:jedi#completions_enabled = 0
 let g:jedi#popup_on_dot = 0
 
@@ -143,6 +141,7 @@ let g:ale_sign_warning = '•'
 let g:instant_markdown_autostart = 0
 let g:instant_markdown_slow = 0
 let g:instant_markdown_mathjax = 1
+let g:instant_markdown_browser = "surf"
 "}}}
 " ==== Clang {{{
 " Change clang binary path
@@ -156,12 +155,13 @@ let g:instant_markdown_mathjax = 1
 let maplocalleader = ","
 let g:tex_flavor='latex'
 let g:vimtex_quickfix_mode=0
-set conceallevel=1
-let g:tex_conceal="abdgm"
+set conceallevel=2
+let g:tex_conceal="abdgms"
 
-" let g:vimtex_fold_enabled = 0
 let g:vimtex_syntax_enabled = 1
 
+" let g:vimtex_view_general_viewer = 'zathura'
+let g:vimtex_view_method = 'zathura'
 let g:vimtex_compiler_latexmk = {
 			\ 'backend' : 'process',
 			\ 'background' : 1,
@@ -180,7 +180,12 @@ let g:vimtex_compiler_latexmk = {
 
 let g:vimtex_compiler_progname = 'nvr'
 let g:tex_no_error = 1
-let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract', 'question', 'solution', 'question']
+let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract', 'question', 'solution', 'question', 'python']
+
+augroup texsettings
+    au FileType tex highlight Conceal  ctermbg=NONE
+    au BufRead,BufNewFile *.tex set filetype=tex
+augroup END
 
 "}}}
 " ==== Pandoc {{{
@@ -194,11 +199,13 @@ let g:pandoc#folding#mode = ["syntax"]
 let g:pandoc#modules#enabled = ["formatting", "folding", "toc"]
 let g:pandoc#formatting#mode = "h"
 let g:pandoc#folding#use_foldtext = 0
-"
-" highlight LineNr  ctermbg=NONE
-autocmd FileType markdown nmap <silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-let g:mdip_imgdir = "images"
-autocmd FileType markdown highlight Conceal  ctermbg=NONE
+ 
+augroup markdownformat
+    au! FileType markdown nmap <silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+    let g:mdip_imgdir = "images"
+    au FileType markdown highlight Conceal  ctermbg=NONE
+    au! FileType markdown set syntax=pandoc
+augroup END
 " }}}
 " ==== Vim Wiki {{{
 
@@ -206,7 +213,6 @@ let g:vimwiki_global_ext= 0
 let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 			\ 'syntax': 'markdown', 
 			\ 'template_ext': '.html'}]
-"
 
 let g:vimwiki_ext2syntax = {'.md': 'markdown'}
 let g:vimwiki_folding='expr'
@@ -218,8 +224,7 @@ au FileType vimwiki set foldtext=Foldtxt()
 au BufNewFile,BufRead *.wiki  set syntax=markdown.pandoc
 au BufNewFile,BufRead vimwiki  set syntax=markdown.pandoc
 
-
-let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr, pre, script'
+let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr,pre,script'
 "}}}
 " ==== Status Line {{{
 set laststatus=2
@@ -267,7 +272,7 @@ if (colorschemeval == 1)
 	colorscheme zenburn
 endif
 if (colorschemeval == 2)
-	colorscheme dracula
+	colorscheme nord
 endif
 
 
@@ -277,32 +282,32 @@ hi normal guibg=NONE ctermbg=NONE
 
 if (colorschemeval == 0)
 	highlight Search ctermfg=9 ctermbg=8
-	highlight GitGutterAdd    ctermbg=NONE ctermfg=2
-	highlight GitGutterDelete ctermbg=NONE ctermfg=1
-	highlight GitGutterChange ctermbg=NONE ctermfg=3
 	highlight ALEErrorSign ctermfg=9 ctermbg=NONE
 	highlight ALEWarningSign ctermfg=11 ctermbg=NONE
 endif
 if (colorschemeval == 1)
 	highlight Pmenu ctermbg=NONE
-	" highlight LineNr ctermbg=NONE ctermfg=59
+	highlight LineNr ctermbg=NONE ctermfg=8
+	highlight CursorLineNr ctermbg=NONE ctermfg=NONE
+	highlight Folded ctermbg=NONE ctermfg=8
+	highlight Search ctermfg=2 ctermbg=66
+	highlight Visual ctermbg=66
+	highlight ALEErrorSign ctermfg=1 ctermbg=NONE
+	highlight ALEWarningSign ctermfg=3 ctermbg=NONE
+endif
+if (colorschemeval == 2)
+	highlight Pmenu ctermbg=NONE
+	highlight CursorLineNr ctermbg=NONE ctermfg=8
 	highlight LineNr ctermbg=NONE ctermfg=8
 	highlight Folded ctermbg=NONE ctermfg=8
 	highlight Search ctermfg=225 ctermbg=6
 	highlight Visual ctermbg=65
 	highlight ALEErrorSign ctermfg=1 ctermbg=NONE
 	highlight ALEWarningSign ctermfg=3 ctermbg=NONE
-	highlight GitGutterAdd    ctermbg=NONE ctermfg=2
-	highlight GitGutterDelete ctermbg=NONE ctermfg=1
-	highlight GitGutterChange ctermbg=NONE ctermfg=3
 endif
-if (colorschemeval == 2)
-	highlight Pmenu ctermbg=NONE
-	highlight Search ctermfg=225 ctermbg=6
-	highlight ALEErrorSign ctermfg=1 ctermbg=0
-	highlight ALEWarningSign ctermfg=3 ctermbg=0
-	highlight Visual ctermbg=65
-endif
+highlight GitGutterAdd    ctermbg=NONE ctermfg=2
+highlight GitGutterDelete ctermbg=NONE ctermfg=1
+highlight GitGutterChange ctermbg=NONE ctermfg=3
 
 if has('gui_running')
 	set guioptions-=T
@@ -315,7 +320,6 @@ endif
 set history=50
 set cmdheight=1
 set hidden
-
 set ruler
 set number
 set backspace=indent,eol,start
@@ -386,7 +390,6 @@ autocmd BufWinLeave .* mkview
 
 autocmd BufWinLeave *.tex mkview
 autocmd BufWinEnter *.tex silent! loadview
-autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 " }}}
 " ==== Tmux settings {{{
@@ -499,12 +502,13 @@ let g:fzf_action = {
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'left': '~20%' }
+let g:fzf_preview_window = ''
 
 " In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10new' }
+" let g:fzf_layout = { 'window': 'enew' }
+" let g:fzf_layout = { 'window': '-tabnew' }
+" let g:fzf_layout = { 'window': '30new' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -524,8 +528,6 @@ let g:fzf_colors =
 
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
-" previous-history instead of down and up. If you don't like the change,
-" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
@@ -618,9 +620,11 @@ inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
 inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
 
 command -nargs=0 Spell setlocal spell spelllang=en_us
-hi SpellBad cterm=underline
+hi SpellBad cterm=underline ctermbg=NONE ctermfg=NONE
 
-nnoremap <C-f> :FZF ~<CR>
+nnoremap <C-f> :GFiles<CR>
+inoremap <C-f> <Esc>:BLines!<CR>
+nnoremap <leader>g :Commits!<CR>
 
 nmap <leader>c <Plug>Commentary
 vmap <leader>c <Plug>Commentary
@@ -661,18 +665,29 @@ function! g:grammarous#hooks.on_check(errs) abort
 	nmap <buffer><C-n> <Plug>(grammarous-move-to-next-error)
 	nmap <buffer><C-p> <Plug>(grammarous-move-to-previous-error)
 	nmap <buffer><C-f> <Plug>(grammarous-fixit)
+	nmap <buffer><C-r> <Plug>(grammarous-remove-error)
 	nmap <buffer><C-e> <Plug>(grammarous-open-info-window)
+	nmap <buffer><C-o> <Plug>(grammarous-disable-rule)
 endfunction
 
 function! g:grammarous#hooks.on_reset(errs) abort
 	nunmap <buffer><C-n>
 	nunmap <buffer><C-p>
 	nunmap <buffer><C-f>
+	nunmap <buffer><C-r>
 	nunmap <buffer><C-e>
+	nunmap <buffer><C-o>
 endfunction
+
+let g:grammarous#disabled_categories = {
+            \ '*' : ['TYPOGRAPHY'],
+            \ }
+let g:grammarous#disabled_rules = {
+            \ '*' : ['DASH_RULE', 'WORD_CONTAINS_UNDERSCORE', 'UNLIKELY_OPENING_PUNCTUATION'],
+            \ }
+
 "}}}
 " ==== Tabs {{{
-
 "ExpandTab inserts 4 spaces instead of the tab
 set expandtab
 set tabstop=4
