@@ -80,11 +80,14 @@ syntax enable
 "}}}
 " ==== Deoplete {{{
 set omnifunc=syntaxcomplete#Complete
-
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#auto_complete_start_length = 2
-let g:deoplete#max_list = 8
+
+call deoplete#custom#option({
+    \ 'auto_complete_delay': 200,
+    \ 'smart_case': v:true,
+    \ 'auto_complete_start_length': 2,
+    \ 'deoplete#max_list': 8
+    \ })
 let g:deoplete#sources#jedi#python_path = '/home/rahul/Documents/software/anaconda3/envs/py36/bin/python3'
 let g:deoplete#sources#jedi#show_docstring = 1
 
@@ -232,9 +235,31 @@ set noshowmode
 let g:lightline = {
 			\ 'colorscheme': 'seoul256',
 			\ }
+let g:lightline = {
+    \ 'colorscheme': 'seoul256',
+    \ 'component': {
+    \   'lineinfo': '⭡ %3l:%-2v',
+    \ },
+    \ 'component_function': {
+    \   'readonly': 'LightlineReadonly',
+    \   'fugitive': 'LightlineFugitive'
+    \ },
+    \ 'separator': { 'left': '⮀'},
+    \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+    \ }
+function! LightlineReadonly()
+    return &readonly ? '⭤' : ''
+endfunction
+function! LightlineFugitive()
+    if exists('*FugitiveHead')
+        let branch = FugitiveHead()
+        return branch !=# '' ? '⭠ '.branch : ''
+    endif
+    return ''
+endfunction
 
 let g:lightline.active = {
-    \ 'left': [ [ 'mode', 'paste' ],
+    \ 'left': [ [ 'mode', 'paste', 'spell'],
     \           [ 'readonly', 'filename', 'modified' ] ],
     \ 'right': [ [ 'lineinfo' ],
     \            [ 'percent' ],
@@ -264,30 +289,24 @@ endif
 
 let mapleader=","
 let colorschemeval=1
-
-if (colorschemeval == 0)
-	colorscheme gruvbox
-endif
-if (colorschemeval == 1)
-	colorscheme zenburn
-endif
-if (colorschemeval == 2)
-	colorscheme nord
-endif
-
+set background=dark
 
 " set background colour
-set background=dark
-hi normal guibg=NONE ctermbg=NONE
-
 if (colorschemeval == 0)
+	colorscheme gruvbox
 	highlight Search ctermfg=9 ctermbg=8
 	highlight ALEErrorSign ctermfg=9 ctermbg=NONE
 	highlight ALEWarningSign ctermfg=11 ctermbg=NONE
 endif
 if (colorschemeval == 1)
+	colorscheme zenburn
+	highlight DiffAdd ctermbg=0
+	highlight DiffDelete ctermbg=0
+	highlight DiffChange ctermbg=0
+	highlight DiffText ctermbg=0
 	highlight Pmenu ctermbg=NONE
 	highlight LineNr ctermbg=NONE ctermfg=8
+	highlight SignColumn ctermbg=NONE
 	highlight CursorLineNr ctermbg=NONE ctermfg=NONE
 	highlight Folded ctermbg=NONE ctermfg=8
 	highlight Search ctermfg=2 ctermbg=66
@@ -296,6 +315,7 @@ if (colorschemeval == 1)
 	highlight ALEWarningSign ctermfg=3 ctermbg=NONE
 endif
 if (colorschemeval == 2)
+	colorscheme nord
 	highlight Pmenu ctermbg=NONE
 	highlight CursorLineNr ctermbg=NONE ctermfg=8
 	highlight LineNr ctermbg=NONE ctermfg=8
@@ -308,6 +328,8 @@ endif
 highlight GitGutterAdd    ctermbg=NONE ctermfg=2
 highlight GitGutterDelete ctermbg=NONE ctermfg=1
 highlight GitGutterChange ctermbg=NONE ctermfg=3
+hi normal guibg=NONE ctermbg=NONE
+
 
 if has('gui_running')
 	set guioptions-=T
@@ -641,7 +663,7 @@ let g:startify_change_to_vcs_root = 1
 let g:startify_files_number = 5
 let g:startify_lists = [
 			\ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-			\ { 'type': 'files',     'header': ['   MRU']            },
+            \ { 'type': 'dir',       'header': ['   Files '. getcwd()] },
 			\ { 'type': 'sessions',  'header': ['   Sessions']       },
 			\ ]
 
@@ -656,7 +678,7 @@ let g:ascii = [
 			\'                                       ',
 			\'                                       ',
 			\]
-let g:startify_custom_header = g:ascii + startify#pad(startify#fortune#boxed())
+let g:startify_custom_header = g:ascii
 "}}}
 " ==== Grammarous {{{
 
