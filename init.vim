@@ -623,7 +623,7 @@ command -nargs=0 Spell setlocal spell spelllang=en_us
 hi SpellBad cterm=underline ctermbg=NONE ctermfg=NONE
 
 nnoremap <C-f> :GFiles<CR>
-inoremap <C-f> <Esc>:BLines!<CR>
+nnoremap <leader>l <Esc>:BLines!<CR>
 nnoremap <leader>g :Commits!<CR>
 
 nmap <leader>c <Plug>Commentary
