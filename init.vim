@@ -27,8 +27,9 @@ Plug 'rhysd/vim-grammarous'
 Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-commentary'
 Plug 'Konfekt/FastFold'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'rhysd/clever-f.vim'
 
 " ### Language Specific Plugins ####
 Plug 'rahul13ramesh/SimpylFold'
@@ -120,9 +121,13 @@ let g:jedi#popup_on_dot = 0
 
 " So that vim splits aren't affected
 let g:jedi#use_splits_not_buffers = "left" 
+autocmd FileType python setlocal completeopt-=preview
 " }}}
 " ==== SimplyFold : Python {{{
 let g:SimpylFold_docstring_preview = 1
+" }}}
+" ==== Comments{{{
+autocmd FileType markdown setlocal commentstring=<!--\ %s\ -->
 " }}}
 " ==== Ale settings {{{
 let g:ale_close_preview_on_insert = 1
@@ -145,6 +150,7 @@ let g:instant_markdown_autostart = 0
 let g:instant_markdown_slow = 0
 let g:instant_markdown_mathjax = 1
 let g:instant_markdown_browser = "surf"
+"
 "}}}
 " ==== Clang {{{
 " Change clang binary path
@@ -206,9 +212,9 @@ let g:pandoc#folding#use_foldtext = 0
 augroup markdownformat
     au! FileType markdown nmap <silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
     let g:mdip_imgdir = "images"
-    au FileType markdown highlight Conceal  ctermbg=NONE
     au! FileType markdown set syntax=pandoc
 augroup END
+au FileType markdown highlight Conceal  ctermbg=NONE
 " }}}
 " ==== Vim Wiki {{{
 
@@ -244,7 +250,7 @@ let g:lightline = {
     \   'readonly': 'LightlineReadonly',
     \   'fugitive': 'LightlineFugitive'
     \ },
-    \ 'separator': { 'left': '⮀'},
+    \ 'separator': { 'left': '⮀', 'right': ''},
     \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
     \ }
 function! LightlineReadonly()
@@ -645,7 +651,7 @@ command -nargs=0 Spell setlocal spell spelllang=en_us
 hi SpellBad cterm=underline ctermbg=NONE ctermfg=NONE
 
 nnoremap <C-f> :GFiles<CR>
-nnoremap <leader>l <Esc>:BLines!<CR>
+nnoremap <leader>lf <Esc>:BLines!<CR>
 nnoremap <leader>g :Commits!<CR>
 
 nmap <leader>c <Plug>Commentary
