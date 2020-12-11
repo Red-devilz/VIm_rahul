@@ -28,14 +28,20 @@ Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-commentary'
 Plug 'Konfekt/FastFold'
 Plug 'dense-analysis/ale'
+
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'tpope/vim-surround'
 Plug 'rhysd/clever-f.vim'
+Plug 'puremourning/vimspector'
 
 " ### Language Specific Plugins ####
 Plug 'rahul13ramesh/SimpylFold'
 Plug 'tell-k/vim-autopep8'
 Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'Shougo/deoplete-clangx'
 Plug 'davidhalter/jedi-vim'
+
+Plug 'vim-scripts/google.vim'
 
 Plug 'lervag/vimtex', {'frozen': 1}
 Plug 'rahul13ramesh/vim-tex-fold'
@@ -43,34 +49,15 @@ Plug 'KeitaNakamura/tex-conceal.vim'
 
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'ferrine/md-img-paste.vim'
-Plug 'dhruvasagar/vim-table-mode'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'tmux-plugins/vim-tmux'
 
 " ### Aesthetics ###
 Plug 'jnurmine/Zenburn'
-Plug 'itchyny/lightline.vim'
+Plug 'rahul13ramesh/lightline.vim'
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
-
-" Plug 'flazz/vim-colorschemes'
-" Plug 'Shougo/deoplete-clangx'
-" Plug 'majutsushi/tagbar'
-" Plug 'artur-shaik/vim-javacomplete2'
-" Plug 'vim-scripts/javacomplete'
-" Plug 'pangloss/vim-javascript'
-" Plug 'kchmck/vim-coffee-script'
-" Plug 'vim-scripts/Vim-R-plugin'
-" Plug 'shirk/vim-gas'
-" Plug 'shmup/vim-sql-syntax'
-" Plug 'adimit/prolog.vim'
-" Plug 'tbastos/vim-lua'
-" Plug 'https://github.com/mephux/bro.vim.git'
-" Plug 'sukima/xmledit'
-" Plug 'actionshrimp/vim-xpath'
-" Plug 'vim-scripts/XML-Folding'
 
 " all of your plugins must be added before the following line
 call plug#end()
@@ -123,22 +110,27 @@ let g:jedi#popup_on_dot = 0
 let g:jedi#use_splits_not_buffers = "left" 
 autocmd FileType python setlocal completeopt-=preview
 " }}}
+" ==== vimSpector {{{
+let g:vimspector_enable_mappings = 'HUMAN'
+" }}}
 " ==== SimplyFold : Python {{{
 let g:SimpylFold_docstring_preview = 1
 " }}}
 " ==== Comments{{{
 autocmd FileType markdown setlocal commentstring=<!--\ %s\ -->
+autocmd FileType cpp setlocal commentstring=//\ %s
+autocmd FileType cpp setlocal completeopt-=preview
 " }}}
 " ==== Ale settings {{{
 let g:ale_close_preview_on_insert = 1
 
 " Check Python files with flake8 and pylint.
-let b:ale_linters = ['flake8']
+let b:ale_linters = ['flake8', 'cpplint']
+
 " Fix Python files with autopep8 and yapf.
 let b:ale_fixers = ['autopep8', 'yapf']
 let g:ale_warn_about_trailing_blank_lines=0
 
-" Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_fix_on = 'never'
 
@@ -154,7 +146,7 @@ let g:instant_markdown_browser = "surf"
 "}}}
 " ==== Clang {{{
 " Change clang binary path
-" call deoplete#custom#var('clangx', 'clang_binary', '/usr/local/bin/clang')
+call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
 
 " Change clang options
 " call deoplete#custom#var('clangx', 'default_c_options', '')
@@ -250,8 +242,8 @@ let g:lightline = {
     \   'readonly': 'LightlineReadonly',
     \   'fugitive': 'LightlineFugitive'
     \ },
-    \ 'separator': { 'left': '⮀', 'right': ''},
-    \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+    \ 'separator': { 'left': '', 'right': ''},
+    \ 'subseparator': { 'left': '', 'right': ''}
     \ }
 function! LightlineReadonly()
     return &readonly ? '⭤' : ''
@@ -752,4 +744,9 @@ set shiftwidth=4
 " INstantMarkdownPreview
 " Vimwiki2HTML
 " Gdiff
+" }}}
+" ==== Allow for projcet specific configs {{{
+
+set exrc
+set secure
 " }}}
