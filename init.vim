@@ -6,51 +6,66 @@ filetype off
 call plug#begin('~/.config/nvim/plugged') "
 
 " ### Autocomplete ###
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
-Plug 'Shougo/neoinclude.vim'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets', {'frozen': 1}
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
+" Plug 'Shougo/neoinclude.vim'
+" Plug 'Shougo/neosnippet'
+" Plug 'Shougo/neosnippet-snippets', {'frozen': 1}
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer', { 'branch': 'main' } 
+Plug 'hrsh7th/cmp-nvim-lsp',      { 'branch': 'main' } 
+Plug 'hrsh7th/cmp-buffer',    
+Plug 'f3fora/cmp-spell'
+Plug 'uga-rosa/cmp-dictionary',   { 'branch': 'main' } 
+Plug 'hrsh7th/cmp-path',          { 'branch': 'main' }
+Plug 'hrsh7th/cmp-omni',          { 'branch': 'main' }
+Plug 'hrsh7th/nvim-cmp',          { 'branch': 'main' } 
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'rafamadriz/friendly-snippets', {'branch': 'main'}
 
 " ### File Manipulation ###
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mbbill/undotree'
 
 " ### Tools. ###
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'rhysd/vim-grammarous'
-Plug 'vimwiki/vimwiki'
+Plug 'nvim-lua/plenary.nvim'
 Plug 'tpope/vim-commentary'
-Plug 'Konfekt/FastFold'
+Plug 'rahul13ramesh/SimpylFold'
 Plug 'dense-analysis/ale'
+Plug 'goerz/jupytext.vim'
+Plug 'Konfekt/FastFold'
+Plug 'tmux-plugins/vim-tmux'
+" Plug 'puremourning/vimspector'
+" Plug 'ludovicchabant/vim-gutentags'
 
+" # Writing 
+Plug 'rhysd/vim-grammarous', {'for': ['tex','pandoc', 'md']}
+Plug 'davidbeckingsale/writegood.vim', {'for': ['tex','pandoc', 'md']}
+Plug 'preservim/vim-wordy', {'for': ['tex','pandoc', 'md']}
+Plug 'vimwiki/vimwiki'
+Plug 'junegunn/goyo.vim', {'for': ['tex','pandoc', 'md', 'vimwiki']}
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'ferrine/md-img-paste.vim', {'for': ['pandoc', 'md']}
+Plug 'vim-pandoc/vim-pandoc-syntax', {'for': ['pandoc', 'vimwiki']}
+Plug 'vim-pandoc/vim-pandoc', {'for': ['pandoc', 'vimwiki', 'txt', 'md']}
+
+" Vim motions
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-surround'
 Plug 'rhysd/clever-f.vim'
-Plug 'puremourning/vimspector'
+Plug 'nacro90/numb.nvim'
 
-" ### Language Specific Plugins ####
-Plug 'rahul13ramesh/SimpylFold'
-Plug 'tell-k/vim-autopep8'
-Plug 'deoplete-plugins/deoplete-jedi'
-Plug 'Shougo/deoplete-clangx'
-Plug 'davidhalter/jedi-vim'
-
-Plug 'vim-scripts/google.vim'
-
-Plug 'lervag/vimtex', {'frozen': 1}
-Plug 'rahul13ramesh/vim-tex-fold'
-Plug 'KeitaNakamura/tex-conceal.vim'
-
-Plug 'suan/vim-instant-markdown'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'tmux-plugins/vim-tmux'
+" Language Specific Plugins
+Plug 'davidhalter/jedi-vim', {'for': ['python']}
+Plug 'lervag/vimtex', {'tag': 'v1.6', 'for': ['tex']}
+Plug 'rahul13ramesh/vim-tex-fold', {'for': ['tex']}
+Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
+" Plug 'vim-scripts/google.vim'
 
 " ### Aesthetics ###
 Plug 'jnurmine/Zenburn'
@@ -58,6 +73,7 @@ Plug 'rahul13ramesh/lightline.vim'
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
+" Plug 'joshdick/onedark.vim'
 
 " all of your plugins must be added before the following line
 call plug#end()
@@ -66,69 +82,52 @@ filetype plugin indent on
 syntax enable
 
 "}}}
-" ==== Deoplete {{{
-set omnifunc=syntaxcomplete#Complete
-let g:deoplete#enable_at_startup = 1
-
-call deoplete#custom#option({
-    \ 'auto_complete_delay': 200,
-    \ 'smart_case': v:true,
-    \ 'auto_complete_start_length': 2,
-    \ 'deoplete#max_list': 8
-    \ })
-let g:deoplete#sources#jedi#python_path = '/home/rahul/Documents/software/anaconda3/envs/py36/bin/python3'
-let g:deoplete#sources#jedi#show_docstring = 1
-
-call deoplete#custom#source('jedi', 'debug_enabled', 0)
- 
-" Enable omni completion.
-augroup filecompletion
-    au! FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    au! FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    au! FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    au! FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-    au! FileType python setlocal omnifunc=jedi#completions
-    au! FileType python set completeopt=menuone,longest
-    au! FileType python setlocal complete-=i
-augroup END
+" ==== Autocomplete {{{
+set completeopt=menu,menuone,noselect
 "}}}
+" ==== Lua {{{
+lua require('config')
+" }}}
 " ==== Snippets {{{
-let g:neosnippet#snippets_directory = '/home/rahul/.config/nvim/plugged/neosnippet-snippets/neosnippets'
-
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
 "}}}
 " ==== Jedi {{{
 
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#completions_enabled = 0
 let g:jedi#popup_on_dot = 0
+let g:jedi#max_doc_height=50
+
+set pumheight=10
+set pumwidth=30
 
 " So that vim splits aren't affected
 let g:jedi#use_splits_not_buffers = "left" 
-autocmd FileType python setlocal completeopt-=preview
+" autocmd FileType python setlocal completeopt-=preview
 " }}}
 " ==== vimSpector {{{
-let g:vimspector_enable_mappings = 'HUMAN'
+" let g:vimspector_enable_mappings = 'HUMAN'
 " }}}
 " ==== SimplyFold : Python {{{
 let g:SimpylFold_docstring_preview = 1
 " }}}
 " ==== Comments{{{
 autocmd FileType markdown setlocal commentstring=<!--\ %s\ -->
+autocmd FileType vimwiki setlocal commentstring=<!--\ %s\ -->
 autocmd FileType cpp setlocal commentstring=//\ %s
 autocmd FileType cpp setlocal completeopt-=preview
 " }}}
+" ==== Line Navigation {{{
+" See lua file
+"}}}
 " ==== Ale settings {{{
-let g:ale_close_preview_on_insert = 1
-
 " Check Python files with flake8 and pylint.
-let b:ale_linters = ['flake8', 'cpplint']
+let g:ale_lint_on_enter = 0
+let b:ale_linters = ['flake8']
+" let b:ale_linters = ['flake8', 'mypy']
+" let b:ale_linters = ['flake8', 'cpplint', 'mypy']
 
 " Fix Python files with autopep8 and yapf.
-let b:ale_fixers = ['autopep8', 'yapf']
+" let b:ale_fixers = ['autopep8', 'yapf']
 let g:ale_warn_about_trailing_blank_lines=0
 
 let g:ale_lint_on_text_changed = 'never'
@@ -142,22 +141,26 @@ let g:instant_markdown_autostart = 0
 let g:instant_markdown_slow = 0
 let g:instant_markdown_mathjax = 1
 let g:instant_markdown_browser = "surf"
+
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 1
+let g:mkdp_browser = 'surf'
+
+" recognized filetypes
+" these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown', 'wiki', 'pandoc']
+
 "
 "}}}
-" ==== Clang {{{
-" Change clang binary path
-call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
-
-" Change clang options
-" call deoplete#custom#var('clangx', 'default_c_options', '')
-" call deoplete#custom#var('clangx', 'default_cpp_options', '')
-" }}}
 " ==== Latex {{{
 let maplocalleader = ","
 let g:tex_flavor='latex'
 let g:vimtex_quickfix_mode=0
 set conceallevel=2
-let g:tex_conceal="abdgms"
+let g:tex_conceal="abdgm"
+let g:tex_superscripts= "[0-9a-zA-W.,:;+-<>/()]"
+let g:tex_subscripts= "[0-9aehijklmnoprstuvx,+-/().]"
 
 let g:vimtex_syntax_enabled = 1
 
@@ -192,24 +195,23 @@ augroup END
 " ==== Pandoc {{{
 let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
 let g:pandoc#syntax#conceal#urls = 1
-let g:pandoc#folding#fold_yaml = 1
-let g:pandoc#folding#fold_fenced_codeblocks = 1
-let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
-let g:pandoc#filetypes#pandoc_markdown = 0
-let g:pandoc#folding#mode = ["syntax"]
+let g:pandoc#filetypes#pandoc_markdown = 1
 let g:pandoc#modules#enabled = ["formatting", "folding", "toc"]
-let g:pandoc#formatting#mode = "h"
-let g:pandoc#folding#use_foldtext = 0
+" let g:pandoc#formatting#mode = "A"
  
-augroup markdownformat
-    au! FileType markdown nmap <silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-    let g:mdip_imgdir = "images"
-    au! FileType markdown set syntax=pandoc
-augroup END
-au FileType markdown highlight Conceal  ctermbg=NONE
+let g:mdip_imgdir = "images"
+au! FileType markdown set syntax=pandoc
+autocmd FileType pandoc nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+
+au FileType markdown,pandoc,vimwiki set foldexpr=NestedMarkdownFolds()
+au FileType markdown,pandoc highlight Conceal  ctermbg=NONE
+" au FileType markdown,pandoc EndOfBuffer ctermfg=NONE ctermbg=NONE
 " }}}
 " ==== Vim Wiki {{{
 
+let g:vimwiki_listsyms = '✗○◐●✓'
+let g:vimwiki_ext2syntax = {'.md': 'markdown'}
+let g:vimwiki_folding='expr'
 let g:vimwiki_global_ext= 0 
 let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 			\ 'syntax': 'markdown', 
@@ -222,6 +224,7 @@ let g:vimwiki_folding='expr'
 au FileType md set syntax=pandoc
 au FileType vimwiki set syntax=markdown.pandoc
 au FileType vimwiki set foldtext=Foldtxt()
+au FileType vimwiki set foldmethod=syntax
 au BufNewFile,BufRead *.wiki  set syntax=markdown.pandoc
 au BufNewFile,BufRead vimwiki  set syntax=markdown.pandoc
 
@@ -380,14 +383,10 @@ set foldmethod=syntax
 set foldnestmax=4
 set foldlevel=0
 set foldlevelstart=0
-set foldminlines=0
+set foldminlines=1
 
 let r_syntax_folding = 1
 let g:vimsyn_folding ='aflmpPrt'
-
-" to use Ctrl-Space:map to : C-@
-nnoremap <space> za
-vnoremap <space> zf
 
 let s:middot='·'
 let s:raquo='»'
@@ -451,55 +450,10 @@ set timeout ttimeoutlen=50
 let g:tmux_navigator_no_mappings = 1
 
 "}}}
-" ==== Nerd Tree settings {{{
-
-" Close NerdTree if only window
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" Tree toggle
-nnoremap <C-n> :NERDTreeToggle<CR>
-
-let NERDTreeIgnore = ['\.pyc$']
-let NERDTreeChDirMode = 2
-
-
-" Vim fonts
-set encoding=UTF-8
-set guifont=DroidSansMono\ Nerd\ Font\ 11
-
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-	exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-	exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('pdf', 'blue', 'none', '#3366FF', '#151515')
-
-call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('yaml', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
-
-call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
-
-call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('py', 'Red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('cpp', 'Red', 'none', '#ffa500', '#151515')
-
-call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
-call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
-
-call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
-call NERDTreeHighlightFile('sh', 'Cyan', 'none', '#686868', '#151515')
+" ==== Telescope settings {{{
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <C-n> <cmd>Telescope file_browser<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 "}}}
 " ==== Git gutter {{{
 let g:gitgutter_override_sign_column_highlight = 1
@@ -513,42 +467,6 @@ set updatetime=1000
 
 " }}}
 " ==== FzF {{{
-
-" This is the default extra key bindings
-let g:fzf_action = {
-			\ 'ctrl-t': 'tab split',
-			\ 'ctrl-x': 'split',
-			\ 'ctrl-v': 'vsplit' }
-
-" Default fzf layout
-" - down / up / left / right
-let g:fzf_layout = { 'left': '~20%' }
-let g:fzf_preview_window = ''
-
-" In Neovim, you can set up fzf window using a Vim command
-" let g:fzf_layout = { 'window': 'enew' }
-" let g:fzf_layout = { 'window': '-tabnew' }
-" let g:fzf_layout = { 'window': '30new' }
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-			\ { 'fg':      ['fg', 'Normal'],
-			\ 'bg':      ['bg', 'Normal'],
-			\ 'hl':      ['fg', 'Comment'],
-			\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-			\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-			\ 'hl+':     ['fg', 'Statement'],
-			\ 'info':    ['fg', 'PreProc'],
-			\ 'border':  ['fg', 'Ignore'],
-			\ 'prompt':  ['fg', 'Conditional'],
-			\ 'pointer': ['fg', 'Exception'],
-			\ 'marker':  ['fg', 'Keyword'],
-			\ 'spinner': ['fg', 'Label'],
-			\ 'header':  ['fg', 'Comment'] }
-
-" Enable per-command history.
-" CTRL-N and CTRL-P will be automatically bound to next-history and
-let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
@@ -613,7 +531,7 @@ noremap <C-v>  <F10>"+p<F10>
 " Indent entire file
 nnoremap <leader>i gg=G
 
-" Neomake mappings
+" ALE mappings
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
@@ -621,6 +539,11 @@ nnoremap <leader>h :nohls<CR>
 nnoremap <leader>u :UndotreeToggle<cr>
 nnoremap <C-l> :call NumberToggle()<cr>
 nnoremap <leader>tw :call WidthToggle()<cr>
+
+
+" to use Ctrl-Space:map to : C-@
+nnoremap <space> za
+vnoremap <space> zf
 
 "Ctags newtab and vsplit
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -642,10 +565,6 @@ inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
 command -nargs=0 Spell setlocal spell spelllang=en_us
 hi SpellBad cterm=underline ctermbg=NONE ctermfg=NONE
 
-nnoremap <C-f> :GFiles<CR>
-nnoremap <leader>lf <Esc>:BLines!<CR>
-nnoremap <leader>g :Commits!<CR>
-
 nmap <leader>c <Plug>Commentary
 vmap <leader>c <Plug>Commentary
 
@@ -655,7 +574,8 @@ vmap <leader>c <Plug>Commentary
 let g:startify_bookmarks = [ {'vim': '~/Documents/config/Vim__files/init.vim'},
             \ {'zsh': '~/Documents/config/term_files/shell/dot.zshrc'},
             \ {'tmux': '~/Documents/config/term_files/shell/dot.tmux.conf'},
-            \ {'wiki': '~/Documents/personal/wikiNotes/index.wiki'} ]
+            \ {'wiki': '~/Documents/personal/wikiNotes/index.wiki'},
+            \ {'org': '~/Documents/personal/wikiNotes/org/index.wiki'} ]
 let g:startify_change_to_dir = 1
 let g:startify_change_to_vcs_root = 1
 let g:startify_files_number = 5
@@ -706,7 +626,42 @@ let g:grammarous#disabled_rules = {
             \ '*' : ['DASH_RULE', 'WORD_CONTAINS_UNDERSCORE', 'UNLIKELY_OPENING_PUNCTUATION'],
             \ }
 
+let g:wordy#ring = [
+  \ 'weak',
+  \ ['being', 'passive-voice', 'weasel'],
+  \ 'business-jargon',
+  \ 'puffery',
+  \ ['problematic', 'redundant', ],
+  \ ['colloquial', 'idiomatic', 'similies', ],
+  \ 'art-jargon',
+  \ ['contractions', 'opinion', 'vague-time', 'said-synonyms', ],
+  \ 'adjectives',
+  \ 'adverbs',
+  \ ]
+
 "}}}
+" ==== Goyo {{{
+function! s:goyo_enter()
+  let b:quitting = 0
+  let b:quitting_bang = 0
+  autocmd QuitPre <buffer> let b:quitting = 1
+  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+endfunction
+
+function! s:goyo_leave()
+  " Quit Vim if this is the only remaining buffer
+  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    if b:quitting_bang
+      qa!
+    else
+      qa
+    endif
+  endif
+endfunction
+
+autocmd! User GoyoEnter call <SID>goyo_enter()
+autocmd! User GoyoLeave call <SID>goyo_leave()
+" }}}
 " ==== Tabs {{{
 "ExpandTab inserts 4 spaces instead of the tab
 set expandtab
@@ -718,7 +673,7 @@ set shiftwidth=4
 
 " == normal ==
 " <C>-n - Nerd Tree
-" <C>-p -  File search 
+" <C>-F -  File search 
 " <C>-U, <C>-D scroll
 " <C>-b - Vertical visual select
 " <C>-\ - ctags open in newtab
@@ -727,7 +682,6 @@ set shiftwidth=4
 " <C>-l - relative line toggle
 " ,c<space> - comment
 " ,ll - latex auto compile
-" ,s - syntastic active passive
 " ,a - select all
 " ,i - Aut indent(or Autopep8)
 " ,h - Remove highlight
@@ -736,14 +690,13 @@ set shiftwidth=4
 
 " == insert ==
 " C-n - Auto-complete
-" C-K - complete trigger
+" C-k - complete trigger
 " jk - Esc
 
-" === Some useful ===
+" === Some useful Coommands ===
 " GrammarousCheck
 " INstantMarkdownPreview
-" Vimwiki2HTML
-" Gdiff
+" GBrowse
 " }}}
 " ==== Allow for projcet specific configs {{{
 
