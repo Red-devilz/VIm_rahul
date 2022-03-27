@@ -1,29 +1,27 @@
 " ==== Vim-plug settings {{{
-
 set nocompatible              
 filetype off                 
 
-call plug#begin('~/.config/nvim/plugged') "
+call plug#begin('~/.config/nvim/plugged')
 
-" ### Autocomplete ###
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
-" Plug 'Shougo/neoinclude.vim'
-" Plug 'Shougo/neosnippet'
-" Plug 'Shougo/neosnippet-snippets', {'frozen': 1}
+" Language server
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer', { 'branch': 'main' } 
+
+" Autocomplete plugin/sources
+Plug 'hrsh7th/nvim-cmp',          { 'branch': 'main' } 
 Plug 'hrsh7th/cmp-nvim-lsp',      { 'branch': 'main' } 
 Plug 'hrsh7th/cmp-buffer',    
-Plug 'f3fora/cmp-spell'
 Plug 'uga-rosa/cmp-dictionary',   { 'branch': 'main' } 
 Plug 'hrsh7th/cmp-path',          { 'branch': 'main' }
 Plug 'hrsh7th/cmp-omni',          { 'branch': 'main' }
-Plug 'hrsh7th/nvim-cmp',          { 'branch': 'main' } 
+
+" Snippets
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets', {'branch': 'main'}
 
-" ### File Manipulation ###
+" Git/File Manipulation
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'nvim-telescope/telescope.nvim'
@@ -31,28 +29,31 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mbbill/undotree'
 
-" ### Tools. ###
-Plug 'christoomey/vim-tmux-navigator'
+" Tools
 Plug 'nvim-lua/plenary.nvim'
 Plug 'tpope/vim-commentary'
-Plug 'rahul13ramesh/SimpylFold'
 Plug 'dense-analysis/ale'
-Plug 'goerz/jupytext.vim'
 Plug 'Konfekt/FastFold'
-Plug 'tmux-plugins/vim-tmux'
-" Plug 'puremourning/vimspector'
-" Plug 'ludovicchabant/vim-gutentags'
+Plug 'christoomey/vim-tmux-navigator'
 
-" # Writing 
+" Writing 
 Plug 'rhysd/vim-grammarous', {'for': ['tex','pandoc', 'md']}
 Plug 'davidbeckingsale/writegood.vim', {'for': ['tex','pandoc', 'md']}
 Plug 'preservim/vim-wordy', {'for': ['tex','pandoc', 'md']}
 Plug 'vimwiki/vimwiki'
 Plug 'junegunn/goyo.vim', {'for': ['tex','pandoc', 'md', 'vimwiki']}
+
+" Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'ferrine/md-img-paste.vim', {'for': ['pandoc', 'md']}
 Plug 'vim-pandoc/vim-pandoc-syntax', {'for': ['pandoc', 'vimwiki']}
 Plug 'vim-pandoc/vim-pandoc', {'for': ['pandoc', 'vimwiki', 'txt', 'md']}
+
+" Tex
+Plug 'tmux-plugins/vim-tmux', {'for': ['tmux']}
+Plug 'lervag/vimtex', {'tag': 'v1.6', 'for': ['tex']}
+Plug 'rahul13ramesh/vim-tex-fold', {'for': ['tex']}
+Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 
 " Vim motions
 Plug 'michaeljsmith/vim-indent-object'
@@ -60,12 +61,10 @@ Plug 'tpope/vim-surround'
 Plug 'rhysd/clever-f.vim'
 Plug 'nacro90/numb.nvim'
 
-" Language Specific Plugins
+" Python
 Plug 'davidhalter/jedi-vim', {'for': ['python']}
-Plug 'lervag/vimtex', {'tag': 'v1.6', 'for': ['tex']}
-Plug 'rahul13ramesh/vim-tex-fold', {'for': ['tex']}
-Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
-" Plug 'vim-scripts/google.vim'
+Plug 'goerz/jupytext.vim'
+Plug 'rahul13ramesh/SimpylFold'
 
 " ### Aesthetics ###
 Plug 'jnurmine/Zenburn'
@@ -73,57 +72,47 @@ Plug 'rahul13ramesh/lightline.vim'
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
-" Plug 'joshdick/onedark.vim'
 
-" all of your plugins must be added before the following line
 call plug#end()
 
 filetype plugin indent on
 syntax enable
 
 "}}}
-" ==== Autocomplete {{{
-set completeopt=menu,menuone,noselect
-"}}}
-" ==== Lua {{{
+" ==== Lua config {{{
 lua require('config')
 " }}}
-" ==== Snippets {{{
+" ==== General setting {{{
+set completeopt=menu,menuone,noselect
+set pumheight=10
+set pumwidth=30
+set conceallevel=2
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set so=10
+set tw=80
+
+let maplocalleader = ","
 "}}}
 " ==== Jedi {{{
-
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#completions_enabled = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#max_doc_height=50
 
-set pumheight=10
-set pumwidth=30
-
 " So that vim splits aren't affected
 let g:jedi#use_splits_not_buffers = "left" 
-" autocmd FileType python setlocal completeopt-=preview
-" }}}
-" ==== vimSpector {{{
-" let g:vimspector_enable_mappings = 'HUMAN'
 " }}}
 " ==== SimplyFold : Python {{{
 let g:SimpylFold_docstring_preview = 1
 " }}}
-" ==== Comments{{{
-autocmd FileType markdown setlocal commentstring=<!--\ %s\ -->
-autocmd FileType vimwiki setlocal commentstring=<!--\ %s\ -->
-autocmd FileType cpp setlocal commentstring=//\ %s
-autocmd FileType cpp setlocal completeopt-=preview
-" }}}
-" ==== Line Navigation {{{
-" See lua file
-"}}}
 " ==== Ale settings {{{
 " Check Python files with flake8 and pylint.
 let g:ale_lint_on_enter = 0
 let b:ale_linters = ['flake8']
-" let b:ale_linters = ['flake8', 'mypy']
 " let b:ale_linters = ['flake8', 'cpplint', 'mypy']
 
 " Fix Python files with autopep8 and yapf.
@@ -151,13 +140,24 @@ let g:mkdp_browser = 'surf'
 " these filetypes will have MarkdownPreview... commands
 let g:mkdp_filetypes = ['markdown', 'wiki', 'pandoc']
 
-"
+let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
+let g:pandoc#syntax#conceal#urls = 1
+let g:pandoc#filetypes#pandoc_markdown = 1
+let g:pandoc#modules#enabled = ["formatting", "folding", "toc"]
+" let g:pandoc#formatting#mode = "A"
+ 
+let g:mdip_imgdir = "images"
+
+augroup pandoc
+    autocmd FileType pandoc nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+    autocmd BufWinEnter *.{wiki,md,mkd,mkdn,mdown,mark*} silent setf pandoc
+    autocmd FileType markdown,pandoc,vimwiki set foldexpr=NestedMarkdownFolds()
+    autocmd FileType markdown,pandoc highlight Conceal ctermbg=NONE
+augroup END
 "}}}
 " ==== Latex {{{
-let maplocalleader = ","
 let g:tex_flavor='latex'
 let g:vimtex_quickfix_mode=0
-set conceallevel=2
 let g:tex_conceal="abdgm"
 let g:tex_superscripts= "[0-9a-zA-W.,:;+-<>/()]"
 let g:tex_subscripts= "[0-9aehijklmnoprstuvx,+-/().]"
@@ -188,25 +188,9 @@ let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize
 
 augroup texsettings
     au FileType tex highlight Conceal  ctermbg=NONE
-    au BufRead,BufNewFile *.tex set filetype=tex
 augroup END
 
 "}}}
-" ==== Pandoc {{{
-let g:pandoc#syntax#codeblocks#embeds#langs = ["python"]
-let g:pandoc#syntax#conceal#urls = 1
-let g:pandoc#filetypes#pandoc_markdown = 1
-let g:pandoc#modules#enabled = ["formatting", "folding", "toc"]
-" let g:pandoc#formatting#mode = "A"
- 
-let g:mdip_imgdir = "images"
-au! FileType markdown set syntax=pandoc
-autocmd FileType pandoc nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-
-au FileType markdown,pandoc,vimwiki set foldexpr=NestedMarkdownFolds()
-au FileType markdown,pandoc highlight Conceal  ctermbg=NONE
-" au FileType markdown,pandoc EndOfBuffer ctermfg=NONE ctermbg=NONE
-" }}}
 " ==== Vim Wiki {{{
 
 let g:vimwiki_listsyms = '✗○◐●✓'
@@ -220,16 +204,22 @@ let g:vimwiki_list = [{'path': '$HOME/Documents/personal/wikiNotes',
 let g:vimwiki_ext2syntax = {'.md': 'markdown'}
 let g:vimwiki_folding='expr'
 
-" au FileType vimwiki set filetype=vimwiki.markdown
-au FileType md set syntax=pandoc
-au FileType vimwiki set syntax=markdown.pandoc
-au FileType vimwiki set foldtext=Foldtxt()
-au FileType vimwiki set foldmethod=syntax
-au BufNewFile,BufRead *.wiki  set syntax=markdown.pandoc
-au BufNewFile,BufRead vimwiki  set syntax=markdown.pandoc
+augroup vimwiki_settings
+    au FileType vimwiki set syntax=markdown.pandoc
+    au FileType vimwiki set foldtext=Foldtxt()
+    au FileType vimwiki set foldmethod=syntax
+    au BufNewFile,BufRead *.wiki  set syntax=markdown.pandoc
+augroup END
 
 let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr,pre,script'
 "}}}
+" ==== Writing {{{
+augroup writing
+    autocmd BufWinEnter *.{wiki,md,mkd,mkdn,mdown,mark*} silent setf markdown
+    autocmd FileType tex,pandoc,markdown,vimwiki setlocal spell spelllang=en_us
+    autocmd FileType tex set tw=0
+augroup END
+" }}}
 " ==== Status Line {{{
 set laststatus=2
 set noshowmode
@@ -347,15 +337,16 @@ set ruler
 set number
 set backspace=indent,eol,start
 
+
 autocmd FileType help wincmd L
-autocmd BufWinEnter *.{wiki,md,mkd,mkdn,mdown,mark*} silent setf markdown
-au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-			\| exe "normal! g'\"" | endif
+" TODO: What does this line do?
+" au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") \| exe "normal! g'\"" | endif
 
 
 " }}}
 " ==== Detect Files {{{
 augroup filetypedetect
+    au! BufRead,BufNewFile *.tex set filetype=tex
 	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
 	au! BufRead,BufNewFile *.vimrc set syntax=vim
 	au! BufRead,BufNewFile *.zshrc set syntax=zsh
@@ -364,7 +355,6 @@ augroup filetypedetect
 augroup END
 " }}}
 " ==== Undo {{{
- 
 " Put plugins and dictionaries in this dir
 let vimDir = '$HOME/.config/nvim'
 let &runtimepath.=','.vimDir
@@ -378,7 +368,6 @@ if has('persistent_undo')
 endif
 "}}}
 " ==== Code folding {{{
-
 set foldmethod=syntax
 set foldnestmax=4
 set foldlevel=0
@@ -404,11 +393,12 @@ endfunction
 set foldtext=Foldtxt()
 hi Folded ctermbg=NONE
 
-autocmd FileType vim :set foldmethod=marker
-autocmd BufWinLeave .* mkview
-
-autocmd BufWinLeave *.tex mkview
-autocmd BufWinEnter *.tex silent! loadview
+augroup code_folding
+    autocmd FileType vim :set foldmethod=marker
+    " Store manual foldJ
+    " autocmd BufWinLeave *.* mkview
+    " autocmd BufWinEnter *.* silent! loadview
+augroup END
 
 " }}}
 " ==== Tmux settings {{{
@@ -437,18 +427,7 @@ else
 	map <M-l> <C-w>l
 endif
 
-
-" Add alt character
-" let c='a'
-" while c <= 'z'
-" exec "set <A-".c.">=\e".c
-" exec "imap \e".c." <A-".c.">"
-" let c = nr2char(1+char2nr(c))
-" endw
-
-set timeout ttimeoutlen=50
 let g:tmux_navigator_no_mappings = 1
-
 "}}}
 " ==== Telescope settings {{{
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -466,14 +445,8 @@ let g:gitgutter_sign_modified_removed = '┃'
 set updatetime=1000
 
 " }}}
-" ==== FzF {{{
-
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-
-"}}}
-" ==== Scrolling, Text-width {{{
-
-"smooth scrolling using Ctrl-D and Ctrl-U(note: if scrolling gets stuck in the middle then simply press Enter and continue)
+" ==== Scrolling {{{
+"smooth scrolling using Ctrl-D and Ctrl-U
 function SmoothScroll(up)
 	if a:up
 		let scrollaction="\<C-y>"
@@ -490,31 +463,7 @@ function SmoothScroll(up)
 		exec "normal " . scrollaction
 	endwhile
 endfunction
-
-" Text width
-set tw=80
-function! WidthToggle()
-	let l:menu_option = strridx(&fo, "t")
-	if( l:menu_option > 0)
-		set fo-=t
-	else
-		set fo+=t
-	endif
-endfunc
-
-" Toggle relative line numbering using Ctrl-l
-function! NumberToggle()
-	if(&relativenumber == 1)
-		set norelativenumber
-	else
-		set relativenumber
-	endif
-endfunc
- 
-" Text center of screen
-set so=10
- 
-"}}}
+" }}}
 " ==== Mappings in VIM  {{{
 
 inoremap jk <Esc>
@@ -537,9 +486,15 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 nnoremap <leader>h :nohls<CR>
 nnoremap <leader>u :UndotreeToggle<cr>
-nnoremap <C-l> :call NumberToggle()<cr>
-nnoremap <leader>tw :call WidthToggle()<cr>
 
+function! NumberToggle()
+	if(&relativenumber == 1)
+		set norelativenumber
+	else
+		set relativenumber
+	endif
+endfunc
+nnoremap <C-l> :call NumberToggle()<cr>
 
 " to use Ctrl-Space:map to : C-@
 nnoremap <space> za
@@ -549,6 +504,7 @@ vnoremap <space> zf
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 set tags=./tags;/
+set timeout timeoutlen=300
 
 " resize vertical splits with Ctrl-w + l / Ctrl-w + h
 nnoremap <c-w>l 5<C-w>>
@@ -662,44 +618,7 @@ endfunction
 autocmd! User GoyoEnter call <SID>goyo_enter()
 autocmd! User GoyoLeave call <SID>goyo_leave()
 " }}}
-" ==== Tabs {{{
-"ExpandTab inserts 4 spaces instead of the tab
-set expandtab
-set tabstop=4
-set shiftwidth=4
-" set softtabstop=0 noexpandtab
-"}}}
-" ==== Set of Mappings {{{
-
-" == normal ==
-" <C>-n - Nerd Tree
-" <C>-F -  File search 
-" <C>-U, <C>-D scroll
-" <C>-b - Vertical visual select
-" <C>-\ - ctags open in newtab
-" gt - change tab
-" gq - word wrap
-" <C>-l - relative line toggle
-" ,c<space> - comment
-" ,ll - latex auto compile
-" ,a - select all
-" ,i - Aut indent(or Autopep8)
-" ,h - Remove highlight
-" <space> - code fold
-" <alt>  kjlh(switch windows)
-
-" == insert ==
-" C-n - Auto-complete
-" C-k - complete trigger
-" jk - Esc
-
-" === Some useful Coommands ===
-" GrammarousCheck
-" INstantMarkdownPreview
-" GBrowse
-" }}}
 " ==== Allow for projcet specific configs {{{
-
 set exrc
 set secure
 " }}}

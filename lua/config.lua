@@ -6,25 +6,7 @@ require('numb').setup{
 }
 
 require('telescope').setup{
-  defaults = {
-    -- Default configuration for telescope goes here:
-    -- config_key = value,
-    mappings = {
-      i = {
-        -- map actions.which_key to <C-h> (default: <C-/>)
-        -- actions.which_key shows the mappings for your picker,
-        -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-      }
-    }
-  },
   pickers = {
-    -- Default configuration for builtin pickers goes here:
-    -- picker_name = {
-    --   picker_config_key = value,
-    --   ...
-    -- }
-    -- Now the picker_config_key will be applied every time you call this
-    -- builtin picker
     find_files = {
       theme = "dropdown",
       prompt_prefix="🔍",
@@ -50,22 +32,16 @@ require('telescope').setup{
     file_browser = {
           theme = "ivy",
     }  
-    -- Your extension configuration goes here:
-    -- extension_name = {
-    --   extension_config_key = value,
-    -- }
-    -- please take a look at the readme of the extension you want to configure
   }
 }
-
 require("telescope").load_extension "file_browser"
 
 
 -- Setup nvim-cmp.
 local cmp = require'cmp'
+local luasnip = require'luasnip'
 
 require("luasnip/loaders/from_vscode").lazy_load()
-local luasnip = require'luasnip'
 
 local check_backspace = function()
   local col = vim.fn.col "." - 1
@@ -153,7 +129,6 @@ cmp.setup({
           vim_item.menu = ({
             luasnip = "[Snippet]",
             buffer = "[Buffer]",
-            omni = "[Omni]",
             path = "[Path]",
             dictionary = "[Spell]",
             nvim_lsp = "[LSP]",
@@ -162,12 +137,11 @@ cmp.setup({
         end,
     },
     sources = {
-        { name = 'luasnip' },
-        { name = 'path' },
-        { name = 'buffer' },
-        { name = 'nvim_lsp' },
-        { name = 'omni' },
-        { name = 'dictionary'},
+        { name = 'luasnip', index=1 },
+        { name = 'path', index=1 },
+        { name = 'buffer', index=1 },
+        { name = 'nvim_lsp', index=1},
+        { name = 'dictionary', index=2},
     },
     documentation = {
        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
@@ -178,11 +152,18 @@ cmp.setup({
     },
 })
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
--- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-require('lspconfig')['jedi_language_server'].setup {
-  capabilities = capabilities
-}
+
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+local lsp_installer = require "nvim-lsp-installer"
+lsp_installer.on_server_ready(function(server)
+    local opts = {
+        capabilities=capabilities,
+    }
+    server:setup(opts)
+end)
 
 
 require("cmp_dictionary").setup({
