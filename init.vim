@@ -11,10 +11,11 @@ Plug 'williamboman/nvim-lsp-installer', { 'branch': 'main' }
 " Autocomplete plugin/sources
 Plug 'hrsh7th/nvim-cmp',          { 'branch': 'main' } 
 Plug 'hrsh7th/cmp-nvim-lsp',      { 'branch': 'main' } 
-Plug 'hrsh7th/cmp-buffer',    
+Plug 'hrsh7th/cmp-buffer',        { 'branch': 'main' } 
 Plug 'uga-rosa/cmp-dictionary',   { 'branch': 'main' } 
 Plug 'hrsh7th/cmp-path',          { 'branch': 'main' }
 Plug 'hrsh7th/cmp-omni',          { 'branch': 'main' }
+Plug 'ray-x/lsp_signature.nvim'
 
 " Snippets
 Plug 'saadparwaiz1/cmp_luasnip'
@@ -28,50 +29,58 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mbbill/undotree'
+Plug 'chrisbra/unicode.vim'
 
 " Tools
 Plug 'nvim-lua/plenary.nvim'
 Plug 'tpope/vim-commentary'
-Plug 'dense-analysis/ale'
-Plug 'Konfekt/FastFold'
+" Plug 'dense-analysis/ale'
+" Plug 'Konfekt/FastFold'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'jpalardy/vim-slime',  { 'branch': 'main' }
 
 " Writing 
 Plug 'rhysd/vim-grammarous', {'for': ['tex','pandoc', 'md']}
 Plug 'davidbeckingsale/writegood.vim', {'for': ['tex','pandoc', 'md']}
 Plug 'preservim/vim-wordy', {'for': ['tex','pandoc', 'md']}
 Plug 'vimwiki/vimwiki'
+Plug 'nvim-orgmode/orgmode'
 Plug 'junegunn/goyo.vim', {'for': ['tex','pandoc', 'md', 'vimwiki']}
 
-" Markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" " Markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vimwiki', 'pandoc']}
 Plug 'ferrine/md-img-paste.vim', {'for': ['pandoc', 'md']}
 Plug 'vim-pandoc/vim-pandoc-syntax', {'for': ['pandoc', 'vimwiki']}
 Plug 'vim-pandoc/vim-pandoc', {'for': ['pandoc', 'vimwiki', 'txt', 'md']}
 
-" Tex
-Plug 'tmux-plugins/vim-tmux', {'for': ['tmux']}
+" " Tex
 Plug 'lervag/vimtex', {'tag': 'v1.6', 'for': ['tex']}
 Plug 'rahul13ramesh/vim-tex-fold', {'for': ['tex']}
-Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
+" Plug 'KeitaNakamura/tex-conceal.vim', {'for': ['tex']}
 
-" Vim motions
+" " Vim motions
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-surround'
 Plug 'rhysd/clever-f.vim'
 Plug 'nacro90/numb.nvim'
 
 " Python
-Plug 'davidhalter/jedi-vim', {'for': ['python']}
+" Plug 'davidhalter/jedi-vim', {'for': ['python']}
 Plug 'goerz/jupytext.vim'
-Plug 'rahul13ramesh/SimpylFold'
+Plug 'rahul13ramesh/SimpylFold', {'for': ['python']}
 
-" ### Aesthetics ###
+" Language specific plugins
+Plug 'tmux-plugins/vim-tmux', {'for': ['tmux']}
+
+" " ### Aesthetics ###
 Plug 'jnurmine/Zenburn'
 Plug 'rahul13ramesh/lightline.vim'
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
+Plug 'goolord/alpha-nvim'
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
+Plug 'akinsho/org-bullets.nvim', {'branch': 'main'}
 
 call plug#end()
 
@@ -105,6 +114,16 @@ let g:jedi#max_doc_height=50
 
 " So that vim splits aren't affected
 let g:jedi#use_splits_not_buffers = "left" 
+
+" }}}
+" ==== Vim Slim Files {{{
+let g:slime_target = "tmux"
+let g:slime_paste_file = "$HOME/.slime_paste"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "1"}
+let g:slime_no_mappings = 1
+
+xmap <C-p><C-p> <Plug>SlimeRegionSend
+nmap <C-p><C-p> <Plug>SlimeParagraphSend
 " }}}
 " ==== SimplyFold : Python {{{
 let g:SimpylFold_docstring_preview = 1
@@ -113,6 +132,7 @@ let g:SimpylFold_docstring_preview = 1
 " Check Python files with flake8 and pylint.
 let g:ale_lint_on_enter = 0
 let b:ale_linters = ['flake8']
+let b:ale_linters = ['']
 " let b:ale_linters = ['flake8', 'cpplint', 'mypy']
 
 " Fix Python files with autopep8 and yapf.
@@ -149,8 +169,8 @@ let g:pandoc#modules#enabled = ["formatting", "folding", "toc"]
 let g:mdip_imgdir = "images"
 
 augroup pandoc
+    autocmd!
     autocmd FileType pandoc nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
-    autocmd BufWinEnter *.{wiki,md,mkd,mkdn,mdown,mark*} silent setf pandoc
     autocmd FileType markdown,pandoc,vimwiki set foldexpr=NestedMarkdownFolds()
     autocmd FileType markdown,pandoc highlight Conceal ctermbg=NONE
 augroup END
@@ -187,7 +207,8 @@ let g:tex_no_error = 1
 let g:tex_fold_additional_envs = ['center', 'tikzpicture', 'enumerate', 'itemize', 'frame', 'abstract', 'question', 'solution', 'question', 'python']
 
 augroup texsettings
-    au FileType tex highlight Conceal  ctermbg=NONE
+    autocmd!
+    autocmd FileType tex highlight Conceal  ctermbg=NONE
 augroup END
 
 "}}}
@@ -215,8 +236,9 @@ let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,br,hr,pre,script'
 "}}}
 " ==== Writing {{{
 augroup writing
-    autocmd BufWinEnter *.{wiki,md,mkd,mkdn,mdown,mark*} silent setf markdown
-    autocmd FileType tex,pandoc,markdown,vimwiki setlocal spell spelllang=en_us
+    autocmd!
+    autocmd BufWinEnter *.{wiki,md,mkd,mkdn,mdown,mark*} silent setf pandoc
+    autocmd FileType tex,pandoc,markdown setlocal spell spelllang=en_us
     autocmd FileType tex set tw=0
 augroup END
 " }}}
@@ -319,8 +341,10 @@ endif
 highlight GitGutterAdd    ctermbg=NONE ctermfg=2
 highlight GitGutterDelete ctermbg=NONE ctermfg=1
 highlight GitGutterChange ctermbg=NONE ctermfg=3
-hi normal guibg=NONE ctermbg=NONE
+highlight normal guibg=NONE ctermbg=NONE
 
+" highlight jediFat ctermbg=none ctermfg=8
+" highlight jediFunction ctermbg=none ctermfg=0
 
 if has('gui_running')
 	set guioptions-=T
@@ -345,14 +369,13 @@ autocmd FileType help wincmd L
 
 " }}}
 " ==== Detect Files {{{
-augroup filetypedetect
-    au! BufRead,BufNewFile *.tex set filetype=tex
-	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
-	au! BufRead,BufNewFile *.vimrc set syntax=vim
-	au! BufRead,BufNewFile *.zshrc set syntax=zsh
-	au! BufRead,BufNewFile *.s set filetype=nasm
-	au! BufRead,BufNewFile *.S set filetype=gas
-augroup END
+" augroup the_filetypes
+"   au! BufRead,BufNewFile *.tex set filetype=tex
+"   au! BufRead,BufNewFile *.lua set filetype=lua
+" 	au! BufRead,BufNewFile *.m,*.oct set filetype=octave
+" 	au! BufRead,BufNewFile *.vimrc set syntax=vim
+" 	au! BufRead,BufNewFile *.zshrc set syntax=zsh
+" augroup END
 " }}}
 " ==== Undo {{{
 " Put plugins and dictionaries in this dir
@@ -394,6 +417,7 @@ set foldtext=Foldtxt()
 hi Folded ctermbg=NONE
 
 augroup code_folding
+    autocmd!
     autocmd FileType vim :set foldmethod=marker
     " Store manual foldJ
     " autocmd BufWinLeave *.* mkview
@@ -467,7 +491,6 @@ endfunction
 " ==== Mappings in VIM  {{{
 
 inoremap jk <Esc>
-noremap <leader>a  ggVG
 
 " Remap vertical selection
 noremap <C-b> <C-v>
@@ -504,7 +527,7 @@ vnoremap <space> zf
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 set tags=./tags;/
-set timeout timeoutlen=300
+set timeout timeoutlen=600
 
 " resize vertical splits with Ctrl-w + l / Ctrl-w + h
 nnoremap <c-w>l 5<C-w>>
@@ -524,35 +547,6 @@ hi SpellBad cterm=underline ctermbg=NONE ctermfg=NONE
 nmap <leader>c <Plug>Commentary
 vmap <leader>c <Plug>Commentary
 
-"}}}
-" ==== Startup Page {{{
-
-let g:startify_bookmarks = [ {'vim': '~/Documents/config/Vim__files/init.vim'},
-            \ {'zsh': '~/Documents/config/term_files/shell/dot.zshrc'},
-            \ {'tmux': '~/Documents/config/term_files/shell/dot.tmux.conf'},
-            \ {'wiki': '~/Documents/personal/wikiNotes/index.wiki'},
-            \ {'org': '~/Documents/personal/wikiNotes/org/index.wiki'} ]
-let g:startify_change_to_dir = 1
-let g:startify_change_to_vcs_root = 1
-let g:startify_files_number = 5
-let g:startify_lists = [
-			\ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-            \ { 'type': 'dir',       'header': ['   Files '. getcwd()] },
-			\ { 'type': 'sessions',  'header': ['   Sessions']       },
-			\ ]
-
-let g:ascii = [
-			\'                                       ',
-			\'     _   _                 _           ',
-			\'    | \ | |               (_)          ',
-			\'    |  \| | ___  _____   ___ _ __ ___  ',
-			\'    | . ` |/ _ \/ _ \ \ / / |  _   _ \ ',
-			\'    | |\  |  __/ (_) \ V /| | | | | | |',
-			\'    \_| \_/\___|\___/ \_/ |_|_| |_| |_|',
-			\'                                       ',
-			\'                                       ',
-			\]
-let g:startify_custom_header = g:ascii
 "}}}
 " ==== Grammarous {{{
 
@@ -621,4 +615,4 @@ autocmd! User GoyoLeave call <SID>goyo_leave()
 " ==== Allow for projcet specific configs {{{
 set exrc
 set secure
-" }}}
+" }}}}}}
